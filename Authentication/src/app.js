@@ -3,10 +3,15 @@ import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import http from 'http';
 import { fileURLToPath } from 'url';
+
 import authRouter from './routes/auth.routes.js';
 import pitchRouter from './routes/pitch.routes.js';
 import evaluationRouter from './routes/evaluation.routes.js';
+import startupsRouter from './routes/startups.routes.js';
+import schemesRouter from './routes/schemes.routes.js';
+import ragRouter from './routes/rag.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +22,41 @@ app.use(cors({
     origin: true,
     credentials: true
 }));
+
+// Streaming proxy for Python FastAPI Agent on port 8000
+// Mounted before body parsers so multipart/form-data & JSON stream directly
+function proxyToAgent(req, res) {
+    const targetUrl = new URL(req.originalUrl, 'http://127.0.0.1:8000');
+    const headers = { ...req.headers, host: '127.0.0.1:8000' };
+
+    const options = {
+        hostname: '127.0.0.1',
+        port: 8000,
+        path: targetUrl.pathname + targetUrl.search,
+        method: req.method,
+        headers
+    };
+
+    const proxyReq = http.request(options, (proxyRes) => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res, { end: true });
+    });
+
+    proxyReq.on('error', (err) => {
+        console.warn(`[Agent Proxy] Python FastAPI backend on port 8000 unreachable (${err.message})`);
+        res.status(503).json({
+            error: "AI Agent backend unavailable",
+            message: "The AI Agent API on port 8000 could not be reached. Ensure uvicorn interview_api:app is running.",
+            detail: err.message
+        });
+    });
+
+    req.pipe(proxyReq, { end: true });
+}
+
+app.use('/api/idea', proxyToAgent);
+app.use('/api/interview', proxyToAgent);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -95,6 +135,15 @@ app.use("/api/pitches", pitchRouter);
 
 // AI Evaluation API routes
 app.use("/api/ai/evaluations", evaluationRouter);
+
+// Startups Discovery API routes
+app.use("/api/startups", startupsRouter);
+
+// Schemes & Grants API routes
+app.use("/api/schemes", schemesRouter);
+
+// RAG Vector Telemetry API routes
+app.use("/api/ai/rag", ragRouter);
 
 // Fallback to starting page index.html for main web routes
 app.get(/.*/, (req, res, next) => {

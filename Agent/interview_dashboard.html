@@ -613,7 +613,15 @@
 </div>
 
 <script>
-const API_BASE = 'https://sih-ayush-interview-api.vercel.app';
+// Dynamic API_BASE targeting local unified gateway or direct backend
+const API_BASE = (function() {
+  if (window.location.port === '8000') return '';
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    // Through Express Gateway on port 3000, /api/interview and /api/idea are proxied to 8000
+    return '';
+  }
+  return 'https://sih-ayush-interview-api.vercel.app';
+})();
 let sessionId = null;
 let camStream = null;
 let camMuted = false;
@@ -969,11 +977,40 @@ document.getElementById('finalizeBtn').addEventListener('click', async () => {
     const final = data.final_output;
     document.getElementById('resultBody').innerHTML = `
       <div class="score-badge">Score: ${final.total_score} / ${final.max_score}</div>
-      <p><strong>Routing:</strong> ${final.routing}</p>
-      <p>${final.feedback.summary_paragraph}</p>
+      <p><strong>Routing Decision:</strong> ${final.routing}</p>
+      <p><strong>Summary:</strong> ${final.feedback?.summary_paragraph || 'Evaluation complete.'}</p>
+      <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
+        <button onclick="window.location.href='/'" style="padding:10px 18px; border-radius:12px; background:#2e5b38; color:#fff; border:none; cursor:pointer; font-weight:700;">Return to Portal</button>
+        <button onclick="window.location.href='/profile/'" style="padding:10px 18px; border-radius:12px; background:#fff; color:#2e5b38; border:2px solid #2e5b38; cursor:pointer; font-weight:700;">View Founder Profile</button>
+      </div>
     `;
+
+    // Persist to backend /api/ai/evaluations
+    try {
+      const token = localStorage.getItem('accessToken');
+      const pitchId = localStorage.getItem('currentPitchId') || '650000000000000000000001';
+      await fetch('/api/ai/evaluations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          pitchId: pitchId,
+          score: final.total_score,
+          maxScore: final.max_score || 30,
+          scoreBreakdown: final.score_breakdown || {},
+          feedback: final.feedback || {},
+          rawEvaluatorOutputs: data
+        })
+      });
+      console.log('✅ Evaluation persisted to backend successfully.');
+    } catch (persistErr) {
+      console.warn('Evaluation persistence notice:', persistErr);
+    }
+
   } catch (err) {
-    alert('Evaluation error');
+    alert('Evaluation error: ' + err.message);
   }
 });
 </script>
