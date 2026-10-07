@@ -25,24 +25,28 @@ function switchTab(tab) {
 
     if (tabLogin) {
         tabLogin.style.background = 'transparent';
-        tabLogin.style.color = '#555';
+        tabLogin.style.color = '#64748b';
+        tabLogin.style.boxShadow = 'none';
     }
     if (tabRegister) {
         tabRegister.style.background = 'transparent';
-        tabRegister.style.color = '#555';
+        tabRegister.style.color = '#64748b';
+        tabRegister.style.boxShadow = 'none';
     }
 
     if (tab === 'login') {
         if (loginForm) loginForm.style.display = 'flex';
         if (tabLogin) {
-            tabLogin.style.background = '#287345';
-            tabLogin.style.color = '#ffffff';
+            tabLogin.style.background = '#ffffff';
+            tabLogin.style.color = '#0d3526';
+            tabLogin.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
         }
     } else if (tab === 'register') {
         if (registerForm) registerForm.style.display = 'flex';
         if (tabRegister) {
-            tabRegister.style.background = '#287345';
-            tabRegister.style.color = '#ffffff';
+            tabRegister.style.background = '#ffffff';
+            tabRegister.style.color = '#0d3526';
+            tabRegister.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
         }
     } else if (tab === 'otp') {
         if (tabsHeader) tabsHeader.style.display = 'none';
@@ -71,24 +75,25 @@ function showToast(message, type = 'info') {
     if (!container) {
         container = document.createElement('div');
         container.id = 'toast-container';
-        container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+        container.style.cssText = 'position:fixed;top:24px;right:24px;z-index:99999;display:flex;flex-direction:column;gap:12px;pointer-events:none;font-family:"Plus Jakarta Sans",sans-serif;';
         document.body.appendChild(container);
     }
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    toast.style.cssText = 'background:#333;color:#fff;padding:12px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-size:14px;display:flex;align-items:center;gap:10px;';
     
-    let iconClass = 'fa-circle-info';
-    if (type === 'success') { iconClass = 'fa-circle-check'; toast.style.background = '#2e6b3e'; }
-    if (type === 'error') { iconClass = 'fa-triangle-exclamation'; toast.style.background = '#c73838'; }
+    let borderAccent = '#10b981';
+    let iconClass = 'fa-circle-check';
+    if (type === 'error') { borderAccent = '#ef4444'; iconClass = 'fa-triangle-exclamation'; }
+    if (type === 'info') { borderAccent = '#3b82f6'; iconClass = 'fa-circle-info'; }
 
-    toast.innerHTML = `<i class="fa-solid ${iconClass}"></i> <span>${message}</span>`;
+    toast.style.cssText = `pointer-events:auto;min-width:300px;max-width:400px;background:rgba(15,23,42,0.95);backdrop-filter:blur(12px);color:#fff;padding:14px 18px;border-radius:14px;box-shadow:0 16px 36px -4px rgba(0,0,0,0.3);font-size:13px;font-weight:600;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,0.12);border-left:4px solid ${borderAccent};transition:all 0.3s cubic-bezier(0.16,1,0.3,1);`;
+    
+    toast.innerHTML = `<i class="fa-solid ${iconClass}" style="color:${borderAccent};font-size:16px;"></i> <span>${message}</span>`;
     container.appendChild(toast);
 
     setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transform = 'translateX(100%)';
-        toast.style.transition = 'all 0.3s ease';
+        toast.style.transform = 'translateX(40px)';
         setTimeout(() => toast.remove(), 300);
     }, 4000);
 }
@@ -302,7 +307,7 @@ async function handleLogoutAll() {
     }
 }
 
-// Modal Controls
+// Modal / Navigation Controls
 function openAuthModal(e) {
     if (e) e.preventDefault();
 
@@ -320,14 +325,8 @@ function openAuthModal(e) {
 
     if (isLoggedIn) {
         window.location.href = '/profile/';
-        return;
-    }
-
-    const modal = document.getElementById('auth-modal-overlay');
-    if (modal) {
-        modal.style.display = 'flex';
     } else {
-        window.location.href = '/';
+        window.location.href = '/auth';
     }
 }
 

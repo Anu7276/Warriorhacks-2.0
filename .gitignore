@@ -1,6 +1,7 @@
 # Dependencies and generated builds
 node_modules/
 dist/
+!Authentication/public/
 public/
 
 # Local secrets and Python cache

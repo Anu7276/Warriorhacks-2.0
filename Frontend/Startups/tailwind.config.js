@@ -34,10 +34,19 @@ export default {
           700: '#8A3E1B',
           800: '#71331B',
           900: '#5C2B1A',
-        }
+        },
+        surface: '#F5F0E3',
+        'on-surface': '#181816',
+        'outline-ink': '#181816',
+        'pop-primary': '#0E4B3E',
+        'pop-mint': '#D7F4E5',
+        'pop-secondary': '#E05326',
+        'pop-yellow': '#FEF08A',
+        'pop-sage': '#7D988B',
       },
       fontFamily: {
-        sans: ['Outfit', 'Inter', 'sans-serif'],
+        sans: ['Hanken Grotesk', 'Outfit', 'Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
         cinzel: ['Cinzel', 'serif'],
       }
     },

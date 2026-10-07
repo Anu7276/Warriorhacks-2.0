@@ -1,754 +1,328 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Government of India | Ministry of Ayush</title>
-    <!-- Google Fonts -->
+    <title>Startup-AYUSH Sovereign Enterprise Portal | SIH1345</title>
+
+    <!-- Google Fonts: Hanken Grotesk, JetBrains Mono, Cinzel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap"
         rel="stylesheet">
-    <!-- Font Awesome (for home page icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- Material Symbols Outlined -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Intro Layer Loader Stylesheet -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="../Home_Page/home.css">
-    <link rel="stylesheet" href="/public/css/style.css">
 
-    <!-- Synchronous check to prevent visual flash on return visits -->
-    <script>
-        (function() {
-            try {
-                // If the user refreshed the browser, we MUST show the intro again.
-                // We detect refresh via the Performance API and clear the session flag.
-                var navEntries = performance.getEntriesByType("navigation");
-                if (navEntries.length > 0 && navEntries[0].type === "reload") {
-                    sessionStorage.removeItem("introCompletedForCurrentAppLoad");
-                } else if (window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
-                    // Fallback for older browsers
-                    sessionStorage.removeItem("introCompletedForCurrentAppLoad");
+    <!-- Tailwind CSS CDN with plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Theme Configuration: Algothon Architectural Pop-Sticker System -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#F5F0E3",
+                        "on-surface": "#181816",
+                        "on-surface-variant": "#4E4B47",
+                        "surface-container-lowest": "#FFFFFF",
+                        "surface-container-low": "#FAF7F0",
+                        "surface-container": "#F1EBE0",
+                        "surface-container-high": "#E7DFCE",
+                        "surface-container-highest": "#D9CEB8",
+                        "outline": "#181816",
+                        "outline-variant": "#D0C7B2",
+                        "primary": "#0E4B3E",
+                        "primary-hover": "#0A382E",
+                        "primary-container": "#D7F4E5",
+                        "on-primary": "#FFFFFF",
+                        "on-primary-container": "#0B382F",
+                        "secondary": "#E05326",
+                        "secondary-container": "#FFEFEA",
+                        "on-secondary-container": "#962C0B",
+                        "tertiary": "#15803D",
+                        "tertiary-container": "#DDF9E6",
+                        "sage-sidebar": "#7D988B",
+                        "sage-header": "#718D80",
+                        "stone-subtle": "#878179"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "2xl": "1.25rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "body-sm": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "headline-sm": ["Hanken Grotesk", "sans-serif"],
+                        "headline-md": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg": ["Hanken Grotesk", "sans-serif"],
+                        "label-caps": ["JetBrains Mono", "monospace"],
+                        "label-code-sm": ["JetBrains Mono", "monospace"],
+                        "label-code-md": ["JetBrains Mono", "monospace"]
+                    }
                 }
-            } catch(e) {}
-
-            var urlParams = new URLSearchParams(window.location.search);
-            if (sessionStorage.getItem('introCompletedForCurrentAppLoad') === 'true' || urlParams.get('skipIntro') === 'true') {
-                document.documentElement.classList.add('skip-intro');
             }
-        })();
+        }
     </script>
+
     <style>
-        html.skip-intro #intro-layer {
-            display: none !important;
-        }
-        html.skip-intro #home-page {
-            opacity: 1 !important;
-            transform: none !important;
-            transition: none !important;
-            height: auto !important;
-            overflow: visible !important;
-        }
-        html.skip-intro,
-        html.skip-intro body {
-            overflow-x: hidden !important;
-            overflow-y: auto !important;
-            height: auto !important;
+        html,
+        body {
             min-height: 100% !important;
-        }
-
-        /* ─── Intro overlay that sits ON TOP of home page ─── */
-        #intro-layer {
-            position: fixed;
-            inset: 0;
-            z-index: 500;
-            pointer-events: auto;
-        }
-
-        /* ─── Home page wrapper: starts hidden below ─── */
-        #home-page {
-            position: relative;
-            z-index: 1;
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-            overflow: hidden;
-            height: 100vh;
-            color: #4a4a4a;
-            background: #fff;
-            font-family: Arial, Helvetica, sans-serif;
+            background: #000000;
+            color: #181816;
+            font-family: 'Hanken Grotesk', sans-serif !important;
+            overflow-x: hidden !important;
         }
 
         html.home-revealed,
         body.home-revealed {
-            overflow-x: hidden !important;
+            background: #F5F0E3 !important;
             overflow-y: auto !important;
             height: auto !important;
-            min-height: 100% !important;
+        }
+
+        /* Intro Canvas & Mandala Animation Layer */
+        #intro-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #000000;
+            pointer-events: auto;
+            transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #intro-layer.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .skip-intro-btn {
+            position: fixed;
+            top: 24px;
+            right: 28px;
+            z-index: 10005;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(212, 175, 55, 0.7);
+            color: #f3e5ab;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        .skip-intro-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            color: #ffffff;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #000;
+        }
+
+        #home-page {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: visible;
+            min-height: 100vh;
+            color: #181816;
+            background: #F5F0E3;
+            display: flex;
+            flex-direction: column;
         }
 
         #home-page.revealed {
-            opacity: 1;
-            transform: translateY(0);
-            overflow: visible;
-            height: auto;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
         }
 
-        /* ─── HOME PAGE STYLES (scoped) ─── */
-        #home-page * {
-            box-sizing: border-box;
-        }
-
-        #home-page .navbar {
-            min-height: 40px;
-            background: #f5f5f5;
-            border-bottom: 1px solid #ebebeb;
-        }
-
-        #home-page .upper_nav {
-            width: min(1225px, calc(100% - 40px));
-            min-height: 40px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 28px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        #home-page .left,
-        #home-page .right,
-        #home-page .login,
-        #home-page .text-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        #home-page .left {
-            gap: 10px;
-            color: #555;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        #home-page .flag img {
-            display: block;
-            width: 22px;
-            height: 15px;
-            object-fit: cover;
-        }
-
-        #home-page .hindi_bharat p,
-        #home-page .gov p {
-            margin: 0;
-        }
-
-        #home-page .brand-divider,
-        #home-page .action-divider {
-            width: 1px;
-            height: 17px;
-            background: #dedede;
-        }
-
-        #home-page .right {
-            height: 40px;
-            gap: 14px;
-            white-space: nowrap;
-        }
-
-        #home-page .right a,
-        #home-page .right button {
-            color: #4b4b4b;
-            font: inherit;
-            text-decoration: none;
-        }
-
-        #home-page .right a:hover,
-        #home-page .right button:hover {
-            color: #0c5c8d;
-        }
-
-        #home-page .right button {
-            padding: 0;
-            border: 0;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        #home-page .text-size {
-            font-size: 13px !important;
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 17px;
             line-height: 1;
+            display: inline-block;
+            white-space: nowrap;
+            -webkit-font-smoothing: antialiased;
         }
 
-        #home-page .text-size--increase,
-        #home-page .text-size--decrease {
-            font-size: 11px !important;
+        /* Warm Architectural Dot-Grid Background */
+        .bg-dot-grid {
+            background-color: #F5F0E3;
+            background-image: radial-gradient(#CFBE9F 1.4px, transparent 1.4px);
+            background-size: 18px 18px;
         }
 
-        #home-page .text-controls {
-            gap: 14px;
+        /* Pop Tactile Hard Shadows */
+        .pop-shadow-sm {
+            box-shadow: 2px 2px 0px #181816;
         }
 
-        #home-page .login {
-            gap: 8px;
-            display: flex;
-            align-items: center;
+        .pop-shadow-md {
+            box-shadow: 3.5px 3.5px 0px #181816;
         }
 
-        #home-page .icon .fa-user {
-            font-size: 15px;
-            color: #555;
+        .pop-shadow-lg {
+            box-shadow: 5px 5px 0px #181816;
         }
 
-        #home-page .main_navbar {
-            height: 80px;
-            background: #fff;
-            border-bottom: 1px solid #e9e9e9;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, .04);
+        .pop-shadow-xl {
+            box-shadow: 6px 6px 0px #181816;
         }
 
-        #home-page .main_nav_inner {
-            width: min(1225px, calc(100% - 40px));
-            height: 100%;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 35px;
+        /* Pop Tactile Buttons & Interactive Cards */
+        .btn-pop {
+            box-shadow: 2.5px 2.5px 0px #181816;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        #home-page .logos,
-        #home-page .ministry_logo,
-        #home-page .startup_logo,
-        #home-page .menu {
-            display: flex;
-            align-items: center;
+        .btn-pop:hover {
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: 4px 4px 0px #181816;
         }
 
-        #home-page .logos {
-            flex-shrink: 0;
-            gap: 13px;
+        .btn-pop:active {
+            transform: translate(2.5px, 2.5px);
+            box-shadow: 0px 0px 0px #181816;
         }
 
-        #home-page .ministry_logo {
-            gap: 10px;
-            color: #202020;
-            line-height: 1;
+        .task-card {
+            box-shadow: 3.5px 3.5px 0px #181816;
+            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
         }
 
-        #home-page .state_emblem {
-            width: auto;
-            height: 62px;
+        .task-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5.5px 5.5px 0px #181816;
         }
 
-        #home-page .ministry_text {
+        .task-card:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1.5px 1.5px 0px #181816;
+        }
+
+        /* Telemetry Pulse Indicator */
+        @keyframes socket-pulse {
+            0% {
+                transform: scale(0.92);
+                opacity: 0.85;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.92);
+                opacity: 0.85;
+            }
+        }
+
+        .status-pulse {
+            animation: socket-pulse 1.8s infinite ease-in-out;
+        }
+
+        /* Tactile Scrollbars */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #E8E0D0;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #181816;
+            border-radius: 9999px;
+            border: 1px solid #FAF7F0;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0E4B3E;
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 10010;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: .7px;
-            text-transform: uppercase;
-        }
-
-        #home-page .ministry_text strong {
-            display: block;
-            margin: 2px 0;
-            color: #000;
-            font-size: 25px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        #home-page .ministry_text small {
-            display: block;
-            color: #555;
-            font-size: 9px;
-            font-weight: 500;
-            letter-spacing: 0;
-            text-transform: none;
-        }
-
-        #home-page .logo_line {
-            width: 1px;
-            height: 49px;
-            background: #d6d6d6;
-        }
-
-        #home-page .startup_logo img {
-            display: block;
-            width: auto;
-            height: 63px;
-            object-fit: contain;
-        }
-
-        #home-page .menu {
-            height: 100%;
-            justify-content: flex-end;
-            gap: clamp(18px, 2vw, 34px);
-        }
-
-        #home-page .menu a,
-        #home-page .search {
-            position: relative;
-            color: #414141;
-            background: transparent;
-            border: 0;
-            font: 500 12px Arial, Helvetica, sans-serif;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        #home-page .menu a:hover {
-            color: #287345;
-        }
-
-        #home-page .menu a.active {
-            color: #266a39;
-        }
-
-        #home-page .menu a.active::after {
-            position: absolute;
-            right: 0;
-            bottom: -26px;
-            left: 0;
-            height: 2px;
-            content: "";
-            background: #317343;
-        }
-
-        #home-page .menu .fa-chevron-down {
-            margin-left: 4px;
-            font-size: 8px;
-        }
-
-        #home-page .search {
-            padding: 7px 0 7px 2px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        #home-page .hero {
-            position: relative;
-            background: url("dash_main.png") center right / cover no-repeat;
-            padding: 70px 0 0;
-        }
-
-        #home-page .hero_inner {
-            width: min(1225px, calc(100% - 40px));
-            margin: 0 auto;
-            padding-bottom: 90px;
-            max-width: 560px;
-        }
-
-        #home-page .hero h1 {
-            margin: 0 0 18px;
-            color: #1f4d2c;
-            font-size: 34px;
-            font-weight: 800;
-            line-height: 1.25;
-        }
-
-        #home-page .hero p {
-            margin: 0 0 26px;
-            color: #4a4a4a;
-            font-size: 14.5px;
-            line-height: 1.7;
-            max-width: 480px;
-        }
-
-        #home-page .hero_buttons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        #home-page .btn {
-            display: inline-flex;
-            align-items: center;
             gap: 10px;
-            padding: 13px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            white-space: nowrap;
-            border: 1.5px solid transparent;
-            transition: opacity .15s ease;
-        }
-
-        #home-page .btn:hover {
-            opacity: .88;
-        }
-
-        #home-page .btn-primary {
-            background: #2e6b3e;
-            color: #fff;
-        }
-
-        #home-page .btn-primary i {
-            font-size: 12px;
-        }
-
-        #home-page .btn-secondary {
-            background: #fff;
-            color: #2e6b3e;
-            border-color: #2e6b3e;
-        }
-
-        #home-page .stats_bar {
-            width: min(1100px, calc(100% - 40px));
-            margin: 0 auto;
-            transform: translateY(50%);
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding: 26px 10px;
-        }
-
-        #home-page .stat {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        #home-page .stat i {
-            font-size: 22px;
-            color: #2e6b3e;
-        }
-
-        #home-page .stat_text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.3;
-        }
-
-        #home-page .stat_text strong {
-            font-size: 19px;
-            color: #1f2a24;
-            font-weight: 800;
-        }
-
-        #home-page .stat_text span {
-            font-size: 12.5px;
-            color: #757575;
-        }
-
-        #home-page .section_underline {
-            display: block;
-            width: 34px;
-            height: 3px;
-            margin: 14px auto 0;
-            background: #2e6b3e;
-            border-radius: 2px;
-        }
-
-        #home-page .stakeholders h2,
-        #home-page .succeed h2 {
-            text-align: center;
-            margin: 0;
-            font-size: 26px;
-            font-weight: 700;
-            color: #1f2a24;
-        }
-
-        #home-page .stakeholders {
-            width: min(1225px, calc(100% - 40px));
-            margin: 0 auto;
-            padding: 110px 0 60px;
-        }
-
-        #home-page .stakeholder_cards {
-            margin-top: 46px;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-        }
-
-        #home-page .stakeholder_card {
-            background: #fbfaf8;
-            border: 1px solid #eee7db;
-            border-radius: 10px;
-            padding: 26px 20px;
-            text-align: left;
-        }
-
-        #home-page .card_icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            margin-bottom: 16px;
-        }
-
-        #home-page .icon-startups {
-            background: #fdead9;
-            color: #d97b29;
-        }
-
-        #home-page .icon-investors {
-            background: #dbe9fb;
-            color: #2e6fc7;
-        }
-
-        #home-page .icon-incubators {
-            background: #e6e1fb;
-            color: #6c4fd0;
-        }
-
-        #home-page .icon-govt {
-            background: #fdead9;
-            color: #d97b29;
-        }
-
-        #home-page .icon-public {
-            background: #e0f2e5;
-            color: #2e6b3e;
-        }
-
-        #home-page .stakeholder_card h3 {
-            margin: 0 0 10px;
-            font-size: 15.5px;
-            font-weight: 700;
-            color: #1f2a24;
-        }
-
-        #home-page .stakeholder_card p {
-            margin: 0 0 18px;
-            font-size: 12.5px;
-            line-height: 1.6;
-            color: #767676;
-            min-height: 58px;
-        }
-
-        #home-page .card_link {
-            font-size: 12.5px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        #home-page .card_link i {
-            font-size: 10px;
-        }
-
-        #home-page .link-green {
-            color: #2e6b3e;
-        }
-
-        #home-page .link-blue {
-            color: #2e6fc7;
-        }
-
-        #home-page .link-purple {
-            color: #6c4fd0;
-        }
-
-        #home-page .link-orange {
-            color: #d97b29;
-        }
-
-        #home-page .succeed {
-            position: relative;
-            background: #f3efe6;
-            padding: 60px 0 70px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        #home-page .succeed_items {
-            position: relative;
-            z-index: 1;
-            width: min(1100px, calc(100% - 40px));
-            margin: 46px auto 0;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 24px;
-        }
-
-        #home-page .succeed_item i {
-            font-size: 22px;
-            color: #2e6b3e;
-            margin-bottom: 14px;
-        }
-
-        #home-page .succeed_item h4 {
-            margin: 0 0 8px;
-            font-size: 14.5px;
-            font-weight: 700;
-            color: #1f2a24;
-        }
-
-        #home-page .succeed_item p {
-            margin: 0;
-            font-size: 12px;
-            line-height: 1.6;
-            color: #7a7a7a;
-        }
-
-        #home-page .cta_banner {
-            background: #17331f;
-            padding: 34px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
-        #home-page .cta_banner p {
-            margin: 0;
-            color: #f2efe6;
-            font-size: 15px;
-            font-style: italic;
-        }
-
-        #home-page .cta_banner .btn-primary {
-            background: #2e6b3e;
-        }
-
-        #home-page .lang-select {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #4b4b4b;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        #home-page .lang-select i.fa-globe {
-            font-size: 12px;
-        }
-
-        #home-page .lang-select select {
-            appearance: none;
-            border: 0;
-            background: transparent;
-            font: inherit;
-            color: inherit;
-            padding-right: 12px;
-            cursor: pointer;
-        }
-
-        #home-page .lang-select .lang-caret {
-            font-size: 8px;
-            margin-left: -8px;
             pointer-events: none;
         }
 
-        #home-page .landmark_watermark {
-            position: absolute;
-            left: -20px;
-            bottom: -10px;
-            width: 340px;
-            color: #e2dccb;
-            opacity: .8;
-            pointer-events: none;
-            z-index: 0;
+        .toast-item {
+            pointer-events: auto;
+            border: 2px solid #181816;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 4px 4px 0px #181816;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toast-in 0.25s ease-out;
+            max-width: 380px;
         }
 
-        @media (max-width: 1050px) {
-            #home-page .stakeholder_cards {
-                grid-template-columns: repeat(3, 1fr);
+        @keyframes toast-in {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
             }
-
-            #home-page .succeed_items {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            #home-page .menu {
-                gap: 16px;
-            }
-
-            #home-page .menu a {
-                font-size: 11px;
-            }
-        }
-
-        @media (max-width: 760px) {
-            #home-page .upper_nav {
-                width: calc(100% - 24px);
-            }
-
-            #home-page .right {
-                gap: 9px;
-            }
-
-            #home-page .skip,
-            #home-page .text-controls,
-            #home-page .action-divider {
-                display: none;
-            }
-
-            #home-page .main_navbar {
-                height: auto;
-            }
-
-            #home-page .main_nav_inner {
-                width: calc(100% - 24px);
-                min-height: 76px;
-            }
-
-            #home-page .menu a {
-                display: none;
-            }
-
-            #home-page .menu {
-                margin-left: auto;
-            }
-
-            #home-page .hero {
-                padding-top: 40px;
-            }
-
-            #home-page .hero h1 {
-                font-size: 26px;
-            }
-
-            #home-page .stats_bar {
-                flex-wrap: wrap;
-                gap: 20px;
-                transform: translateY(30px);
-            }
-
-            #home-page .stakeholders {
-                padding-top: 70px;
-            }
-
-            #home-page .stakeholder_cards {
-                grid-template-columns: 1fr;
-            }
-
-            #home-page .succeed_items {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            #home-page .cta_banner {
-                flex-direction: column;
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
         }
     </style>
 </head>
 
-<body>
+<body
+    class="bg-[#F5F0E3] text-[#181816] font-body-md antialiased min-h-screen flex flex-col selection:bg-[#D7F4E5] selection:text-[#0B382F]">
 
-    <!-- INTRO LAYER — fixed on top, removed when animation finishes -->
+    <!-- ================= INTRO LAYER (202-frame Mandala Canvas Sequence) ================= -->
     <div id="intro-layer">
+        <button type="button" class="skip-intro-btn" id="skip-intro-btn" onclick="window.revealPortal(0.35)">
+            <span>SKIP INTRO</span>
+            <i class="fa-solid fa-forward-step"></i>
+        </button>
+
         <div id="loader" class="loader-overlay">
             <div class="loader-content">
                 <div class="mandala-spinner"></div>
@@ -766,568 +340,1536 @@
         </div>
     </div>
 
-    <!-- HOME PAGE — revealed after intro finishes -->
+    <!-- ================= HOME PAGE (Revealed after Intro completes) ================= -->
     <div id="home-page">
-        <header>
-            <div class="navbar">
-                <div class="upper_nav">
-                    <div class="left">
-                        <div class="flag">
-                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.png"
-                                alt="Indian flag">
-                        </div>
-                        <div class="hindi_bharat">
-                            <p lang="hi">भारत सरकार</p>
-                        </div>
-                        <span class="brand-divider" aria-hidden="true"></span>
-                        <div class="gov">
-                            <p>Government of India</p>
-                        </div>
+
+        <!-- ================= TOP HEADER (Algothon Tactile Sticker Header) ================= -->
+        <header class="bg-[#FFFFFF] border-b-2 border-[#181816] sticky top-0 z-50 shrink-0">
+            <!-- Top Utility Bar: National Emblem, Live Sockets & Role Switcher -->
+            <div
+                class="border-b-2 border-[#181816] bg-[#FAF7F0] px-4 sm:px-5 py-1.5 flex items-center justify-between text-body-sm flex-wrap gap-2">
+                <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                    <div class="flex items-center gap-1.5 font-bold text-[#0E4B3E]">
+                        <span class="material-symbols-outlined text-base">account_balance</span>
+                        <span class="text-xs uppercase tracking-tight font-headline-md">Ministry of AYUSH, Government of
+                            India</span>
                     </div>
-                    <div class="right">
-                        <div class="skip"><a href="#main-content">Skip to Main Content</a></div>
-                        <span class="action-divider" aria-hidden="true"></span>
-                        <div class="text-controls" aria-label="Text size controls">
-                            <button class="text-size text-size--increase" type="button"
-                                aria-label="Increase text size">A+</button>
-                            <button class="text-size" type="button" aria-label="Default text size">A</button>
-                            <button class="text-size text-size--decrease" type="button"
-                                aria-label="Decrease text size">A-</button>
-                        </div>
-                        <span class="action-divider" aria-hidden="true"></span>
-                        <div class="lang-select">
-                            <i class="fa-solid fa-globe" aria-hidden="true"></i>
-                            <select aria-label="Select language">
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
-        #home-page .cta_banner p {
-            margin: 0;
-            color: #f2efe6;
-            font-size: 15px;
-            font-style: italic;
-        }
-
-        #home-page .cta_banner .btn-primary {
-            background: #2e6b3e;
-        }
-
-        #home-page .lang-select {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #4b4b4b;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        #home-page .lang-select i.fa-globe {
-            font-size: 12px;
-        }
-
-        #home-page .lang-select select {
-            appearance: none;
-            border: 0;
-            background: transparent;
-            font: inherit;
-            color: inherit;
-            padding-right: 12px;
-            cursor: pointer;
-        }
-
-        #home-page .lang-select .lang-caret {
-            font-size: 8px;
-            margin-left: -8px;
-            pointer-events: none;
-        }
-
-        #home-page .landmark_watermark {
-            position: absolute;
-            left: -20px;
-            bottom: -10px;
-            width: 340px;
-            color: #e2dccb;
-            opacity: .8;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @media (max-width: 1050px) {
-            #home-page .stakeholder_cards {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            #home-page .succeed_items {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            #home-page .menu {
-                gap: 16px;
-            }
-
-            #home-page .menu a {
-                font-size: 11px;
-            }
-        }
-
-        @media (max-width: 760px) {
-            #home-page .upper_nav {
-                width: calc(100% - 24px);
-            }
-
-            #home-page .right {
-                gap: 9px;
-            }
-
-            #home-page .skip,
-            #home-page .text-controls,
-            #home-page .action-divider {
-                display: none;
-            }
-
-            #home-page .main_navbar {
-                height: auto;
-            }
-
-            #home-page .main_nav_inner {
-                width: calc(100% - 24px);
-                min-height: 76px;
-            }
-
-            #home-page .menu a {
-                display: none;
-            }
-
-            #home-page .menu {
-                margin-left: auto;
-            }
-
-            #home-page .hero {
-                padding-top: 40px;
-            }
-
-            #home-page .hero h1 {
-                font-size: 26px;
-            }
-
-            #home-page .stats_bar {
-                flex-wrap: wrap;
-                gap: 20px;
-                transform: translateY(30px);
-            }
-
-            #home-page .stakeholders {
-                padding-top: 70px;
-            }
-
-            #home-page .stakeholder_cards {
-                grid-template-columns: 1fr;
-            }
-
-            #home-page .succeed_items {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            #home-page .cta_banner {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- INTRO LAYER — fixed on top, removed when animation finishes -->
-    <div id="intro-layer">
-        <div id="loader" class="loader-overlay">
-            <div class="loader-content">
-                <div class="mandala-spinner"></div>
-                <h2 class="loader-title">MINISTRY OF AYUSH</h2>
-                <div class="progress-bar-container">
-                    <div id="loader-progress" class="progress-bar-fill"></div>
+                    <div class="hidden sm:block h-4 w-0.5 bg-[#181816]/30"></div>
+                    <!-- SIH 2026 Sticker Badge -->
+                    <div
+                        class="inline-flex items-center gap-1.5 bg-[#FEF08A] px-2.5 py-0.5 rounded-full border-2 border-[#181816] pop-shadow-sm font-label-code-sm text-[11px] font-bold">
+                        <span class="text-[#181816]">SIH 2026</span>
+                        <span class="text-[#713F12] hidden md:inline">• Problem Statement SIH1345</span>
+                    </div>
+                    <!-- Dual Failover Socket Chip -->
+                    <div id="db-status-chip"
+                        class="hidden xl:flex items-center gap-2 bg-[#D7F4E5] px-2.5 py-0.5 rounded-full border-2 border-[#181816] pop-shadow-sm font-label-code-sm text-[11px] text-[#0B382F] font-bold">
+                        <span class="w-2 h-2 rounded-full bg-[#15803D] border border-[#181816] status-pulse"></span>
+                        <span id="db-status-text">Connected to Gateway</span>
+                        <span class="text-[#0E4B3E]/60">•</span>
+                        <span class="text-[#15803D] font-semibold">In-Memory Resilient Fallback</span>
+                    </div>
                 </div>
-                <span id="loader-percent" class="loader-percent">0%</span>
-            </div>
-        </div>
 
-        <div class="video-hero-container" id="hero-container">
-            <canvas id="video-canvas"></canvas>
-            <div class="vignette-overlay"></div>
-        </div>
-    </div>
-
-    <!-- HOME PAGE — revealed after intro finishes -->
-    <div id="home-page">
-        <header>
-            <div class="navbar">
-                <div class="upper_nav">
-                    <div class="left">
-                        <div class="flag">
-                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.png"
-                                alt="Indian flag">
-                        </div>
-                        <div class="hindi_bharat">
-                            <p lang="hi">भारत सरकार</p>
-                        </div>
-                        <span class="brand-divider" aria-hidden="true"></span>
-                        <div class="gov">
-                            <p>Government of India</p>
-                        </div>
+                <!-- Right Utility Cluster -->
+                <div class="flex items-center gap-2 sm:gap-2.5">
+                    <!-- Sync Speed Pill -->
+                    <div
+                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FFFFFF] border-2 border-[#181816] pop-shadow-sm font-label-code-sm text-[11px] text-[#0B382F] font-bold">
+                        <span class="material-symbols-outlined text-[13px] text-[#15803D]">bolt</span>
+                        <span id="sync-latency-text">SYNCED (8ms)</span>
                     </div>
-                    <div class="right">
-                        <div class="skip"><a href="#main-content">Skip to Main Content</a></div>
-                        <span class="action-divider" aria-hidden="true"></span>
-                        <div class="text-controls" aria-label="Text size controls">
-                            <button class="text-size text-size--increase" type="button"
-                                aria-label="Increase text size">A+</button>
-                            <button class="text-size" type="button" aria-label="Default text size">A</button>
-                            <button class="text-size text-size--decrease" type="button"
-                                aria-label="Decrease text size">A-</button>
-                        </div>
-                        <span class="action-divider" aria-hidden="true"></span>
-                        <div class="lang-select" style="display:inline-flex;align-items:center;gap:4px;background:#f2ede2;padding:3px 8px;border-radius:4px;border:1px solid #dcd5c5;">
-                            <i class="fa-solid fa-globe" style="color:#287345;font-size:12px;" aria-hidden="true"></i>
-                            <select aria-label="Select language" style="border:none;background:transparent;font-size:12px;font-weight:600;color:#333;cursor:pointer;outline:none;padding:0 2px;">
-                                <option value="en">English</option>
-                                <option value="hi">हिंदी</option>
-                            </select>
-                        </div>
-                        <span class="action-divider" aria-hidden="true"></span>
-                        <div class="login">
-                            <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                            <a href="/" id="nav-login-link" onclick="openAuthModal(event)">Login / Register</a>
-                        </div>
+                    <!-- Hindi / EN Language Sticker -->
+                    <button id="lang-toggle-btn" onclick="toggleLanguage(this)"
+                        class="bg-[#FFFFFF] hover:bg-[#FAF7F0] border-2 border-[#181816] rounded-full px-2.5 py-0.5 text-xs font-bold btn-pop flex items-center gap-1 text-[#181816]">
+                        <span class="material-symbols-outlined text-[13px]">translate</span>
+                        <span id="lang-text">हिन्दी / EN</span>
+                    </button>
+                    <div class="hidden sm:block h-4 w-0.5 bg-[#181816]/30"></div>
+                    <!-- Role Switcher Pill -->
+                    <div
+                        class="flex items-center gap-1.5 bg-[#FFFFFF] border-2 border-[#181816] rounded-full px-3 py-0.5 pop-shadow-sm">
+                        <span class="material-symbols-outlined text-[14px] text-[#0E4B3E]">swap_horiz</span>
+                        <span class="font-label-caps text-[10px] text-[#4E4B47] uppercase font-bold">Role:</span>
+                        <select id="user-role-select" onchange="handleRoleChange(this.value)"
+                            class="bg-transparent border-0 p-0 text-xs font-bold text-[#0E4B3E] focus:ring-0 cursor-pointer pr-4">
+                            <option value="Founder">Founder</option>
+                            <option value="Investor">Investor</option>
+                            <option value="Ministry Admin">Ministry Admin</option>
+                            <option value="Incubator">Incubator</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <div class="main_navbar">
-                <div class="main_nav_inner">
-                    <div class="logos">
-                        <div class="ministry_logo logo-container">
-                            <img class="state_emblem"
-                                src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg"
-                                alt="State Emblem of India">
-                            <div class="ministry_text">
-                                <span>Ministry of</span>
-                                <strong>AYUSH</strong>
-                                <small>Government of India</small>
+            <!-- Main Navigation Row -->
+            <div class="flex justify-between items-center w-full px-4 sm:px-5 h-14">
+                <!-- Brand Stamp & Top Nav Links -->
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <a href="/?skipIntro=true" class="flex items-center gap-2.5 cursor-pointer no-underline text-inherit">
+                        <!-- Letter Stamp in Forest Green -->
+                        <div
+                            class="w-8 h-8 rounded-xl bg-[#0E4B3E] text-white flex items-center justify-center font-label-code-md text-sm font-bold border-2 border-[#181816] pop-shadow-sm">
+                            SA
+                        </div>
+                        <div>
+                            <div class="font-headline-md text-base font-extrabold text-[#181816] leading-none tracking-tight">
+                                Startup-AYUSH
+                            </div>
+                            <div class="font-label-caps text-[9.5px] font-bold tracking-wider text-[#4E4B47] mt-0.5">
+                                SOVEREIGN ENTERPRISE PORTAL
                             </div>
                         </div>
-                        <span class="logo_line" aria-hidden="true"></span>
-                        <div class="startup_logo">
-                            <img src="STARTUPAYSH.png" alt="Startup AYUSH Portal">
+                    </a>
+
+                    <!-- Quick Command Search Trigger (Ctrl+K) -->
+                    <button onclick="openSearchModal()"
+                        class="hidden md:flex items-center gap-2 bg-[#FAF7F0] hover:bg-[#FFFFFF] border-2 border-[#181816] rounded-full px-3 py-1 text-[#181816] font-body-sm text-xs btn-pop transition-colors ml-2"
+                        type="button">
+                        <span class="material-symbols-outlined text-[14px]">search</span>
+                        <span class="text-[#4E4B47] font-medium">Search startups, formulations, patents...</span>
+                        <kbd
+                            class="font-label-code-sm text-[10px] bg-[#FFFFFF] px-1.5 py-0.2 rounded-full border-2 border-[#181816] text-[#181816] font-bold">Ctrl+K</kbd>
+                    </button>
+
+                    <!-- Nav Links to Real Sub-Applications -->
+                    <nav class="hidden lg:flex items-center gap-1.5 ml-2 font-body-sm text-[12.5px]">
+                        <a class="text-[#4E4B47] hover:text-[#181816] px-2.5 py-1 rounded-full hover:bg-[#EFE9DC] transition-colors font-semibold"
+                            href="#evaluator">Guidelines</a>
+                        <a class="text-[#FFFFFF] bg-[#0E4B3E] border-2 border-[#181816] pop-shadow-sm font-bold px-3 py-1 rounded-full"
+                            href="/startups/">Startups Directory</a>
+                        <a class="text-[#4E4B47] hover:text-[#181816] px-2.5 py-1 rounded-full hover:bg-[#EFE9DC] transition-colors font-semibold"
+                            href="/investor/">Investors</a>
+                        <a class="text-[#4E4B47] hover:text-[#181816] px-2.5 py-1 rounded-full hover:bg-[#EFE9DC] transition-colors font-semibold"
+                            href="/schemes/">Schemes</a>
+                        <a class="text-[#4E4B47] hover:text-[#181816] px-2.5 py-1 rounded-full hover:bg-[#EFE9DC] transition-colors font-semibold"
+                            href="/interview_dashboard.html">Virtual Pitcher</a>
+                    </nav>
+                </div>
+
+                <!-- Right Trailing Actions & Profile -->
+                <div class="flex items-center gap-2 sm:gap-2.5">
+                    <!-- Direct Push RAG Trigger Button -->
+                    <button onclick="triggerRagSync()"
+                        class="h-8 px-3 bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold flex items-center gap-1.5 btn-pop">
+                        <span class="material-symbols-outlined text-sm">bolt</span>
+                        <span class="hidden sm:inline">Trigger RAG Sync</span>
+                        <span class="sm:hidden">RAG</span>
+                    </button>
+                    <button onclick="showToast('0 unread alerts. Sovereign mesh synchronised.', 'info')"
+                        class="w-8 h-8 rounded-full border-2 border-[#181816] bg-[#FFFFFF] hover:bg-[#FAF7F0] flex items-center justify-center pop-shadow-sm btn-pop relative"
+                        title="Notifications">
+                        <span class="material-symbols-outlined text-sm text-[#181816]">notifications</span>
+                        <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#E05326] border border-[#181816]"></span>
+                    </button>
+                    <button onclick="showToast('Ministry Verification Cryptographic Key Valid', 'success')"
+                        class="w-8 h-8 rounded-full border-2 border-[#181816] bg-[#D7F4E5] hover:bg-[#BFF0D6] flex items-center justify-center pop-shadow-sm btn-pop"
+                        title="Ministry Verification Seal">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">verified</span>
+                    </button>
+                    <div class="h-5 w-0.5 bg-[#181816]/30 hidden sm:block"></div>
+
+                    <!-- User Avatar Sticker / Auth Button -->
+                    <div id="auth-header-slot" onclick="openAuthModal(event)"
+                        class="flex items-center gap-2 bg-[#FAF7F0] hover:bg-[#FFFFFF] border-2 border-[#181816] rounded-full px-2.5 py-1 pop-shadow-sm cursor-pointer btn-pop">
+                        <div id="user-avatar-initials"
+                            class="w-6 h-6 rounded-full bg-[#FEF08A] text-[#181816] flex items-center justify-center font-label-code-sm text-[11px] font-bold border-2 border-[#181816]">
+                            SV
+                        </div>
+                        <div class="hidden sm:block text-left pr-1 leading-tight">
+                            <div id="user-display-name" class="font-bold text-xs text-[#181816]">Sign In / Register</div>
+                            <div id="user-display-subtitle"
+                                class="font-label-caps text-[9px] text-[#0E4B3E] uppercase font-bold">Sovereign Portal</div>
                         </div>
                     </div>
-                    <nav class="menu" aria-label="Main navigation">
-                        <a class="active" href="/?skipIntro=true">Home</a>
-                        <a href="/startups/">Startups <i class="fa-solid fa-chevron-down"></i></a>
-                        <a href="/investor/">Investors</a>
-                        <a href="javascript:void(0)">Incubators &amp; Accelerators</a>
-                        <a href="/schemes/">Government Schemes</a>
-                        <a href="/interview_dashboard.html">Virtual Pitcher</a>
-                    </nav>
                 </div>
             </div>
         </header>
 
-        <main id="main-content">
-            <section class="hero">
-                <div class="hero_inner">
-                    <h1>Empowering AYUSH Startups.<br>Building a Healthy Future.</h1>
-                    <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors,
-                        Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
-                    <div class="hero_buttons">
-                        <a href="/startups/" class="btn btn-primary">Explore Startups <i
-                                class="fa-solid fa-arrow-right"></i></a>
-                        <a href="/interview_dashboard.html" class="btn btn-secondary">Virtual Pitcher</a>
-                    </div>
-                </div>
-                <div class="stats_bar">
-                    <div class="stat"><i class="fa-solid fa-rocket"></i>
-                        <div class="stat_text"><strong>1200+</strong><span>Startups</span></div>
-                    </div>
-                    <div class="stat"><i class="fa-solid fa-user-group"></i>
-                        <div class="stat_text"><strong>300+</strong><span>Investors</span></div>
-                    </div>
-                    <div class="stat"><i class="fa-solid fa-building"></i>
-                        <div class="stat_text"><strong>150+</strong><span>Incubators</span></div>
-                    </div>
-                    <div class="stat"><i class="fa-solid fa-globe"></i>
-                        <div class="stat_text"><strong>25+</strong><span>Countries</span></div>
-                    </div>
-                </div>
-            </section>
+        <!-- ================= MAIN WORKSPACE SHELL ================= -->
+        <div class="flex flex-1 overflow-hidden">
 
-            <section class="stakeholders">
-                <h2>A Collaborative Platform for All Stakeholders</h2>
-                <span class="section_underline" aria-hidden="true"></span>
-                <div class="stakeholder_cards">
-                    <div class="stakeholder_card" onclick="window.location.href='/startups/'" style="cursor: pointer;">
-                        <div class="card_icon icon-startups"><i class="fa-solid fa-rocket"></i></div>
-                        <h3>Startups</h3>
-                        <p>Showcase your innovations, connect with mentors &amp; investors, and grow globally.</p>
-                        <a href="/startups/" class="card_link link-green" onclick="event.stopPropagation();">Explore
-                            Startups <i class="fa-solid fa-arrow-right"></i></a>
+            <!-- ================= DOCKED LEFT PANEL (Rich Sage Pop Sidebar) ================= -->
+            <aside
+                class="w-64 bg-[#7D988B] border-r-2 border-[#181816] flex flex-col justify-between shrink-0 select-none text-[#181816] hidden lg:flex">
+                <!-- Top Workspace Header -->
+                <div class="p-3.5 border-b-2 border-[#181816] bg-[#718D80]">
+                    <div class="flex items-center gap-2.5">
+                        <div
+                            class="w-8 h-8 bg-[#FFFFFF] border-2 border-[#181816] rounded-xl pop-shadow-sm flex items-center justify-center text-[#0E4B3E]">
+                            <span class="material-symbols-outlined text-base">shield</span>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-headline-md text-xs font-bold text-[#181816] leading-tight truncate">Startup-AYUSH
+                                Core</span>
+                            <span class="font-label-code-sm text-[10px] text-[#1E3A2F] font-semibold truncate">SIH-1345
+                                Sovereign Engine</span>
+                        </div>
                     </div>
-                    <div class="stakeholder_card" onclick="window.location.href='/investor/'" style="cursor: pointer;">
-                        <div class="card_icon icon-investors"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                        <h3>Investors</h3>
-                        <p>Discover promising AYUSH startups and invest in the future of holistic health.</p>
-                        <a href="/investor/" class="card_link link-blue" onclick="event.stopPropagation();">Explore
-                            Opportunities <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                    <div class="stakeholder_card" onclick="document.getElementById('succeed').scrollIntoView({behavior: 'smooth'})" style="cursor: pointer;">
-                        <div class="card_icon icon-incubators"><i class="fa-solid fa-people-group"></i></div>
-                        <h3>Incubators &amp; Accelerators</h3>
-                        <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
-                        <a href="#succeed" class="card_link link-purple" onclick="event.stopPropagation();">Collaborate With Us <i
-                                class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                    <div class="stakeholder_card" onclick="window.location.href='/schemes/'" style="cursor: pointer;">
-                        <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
-                        <h3>Government Schemes</h3>
-                        <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
-                        <a href="/schemes/" class="card_link link-orange" onclick="event.stopPropagation();">Explore
-                            Schemes <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                    <div class="stakeholder_card" onclick="window.location.href='/interview_dashboard.html'" style="cursor: pointer;">
-                        <div class="card_icon icon-public"><i class="fa-solid fa-microphone"></i></div>
-                        <h3>Virtual Startup Pitcher</h3>
-                        <p>Practice and showcase your pitch with our AI Virtual Pitch Interviewer.</p>
-                        <a href="/interview_dashboard.html" class="card_link link-green" onclick="event.stopPropagation();">Try Pitcher <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
+                    <!-- Submit Pitch Pop Button (Sticker Callout) -->
+                    <button onclick="document.getElementById('pitch-upload-zone').scrollIntoView({behavior: 'smooth'})"
+                        class="w-full mt-3 h-9 bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-xl font-body-sm text-xs font-bold flex items-center justify-center gap-2 btn-pop">
+                        <span class="material-symbols-outlined text-sm">upload_file</span>
+                        <span>Submit Pitch (AI RAG)</span>
+                    </button>
                 </div>
-            </section>
 
-            <section class="succeed" id="succeed">
-                <div class="landmark_watermark" aria-hidden="true">
-                    <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor" />
-                        <rect x="150" y="52" width="100" height="18" fill="currentColor" />
-                        <path d="M150 70c0-40 22-64 50-64s50 24 50 64" fill="currentColor" />
-                        <rect x="120" y="70" width="20" height="120" fill="currentColor" />
-                        <rect x="260" y="70" width="20" height="120" fill="currentColor" />
-                        <circle cx="130" cy="60" r="10" fill="currentColor" />
-                        <circle cx="270" cy="60" r="10" fill="currentColor" />
-                        <rect x="60" y="150" width="16" height="90" fill="currentColor" />
-                        <rect x="324" y="150" width="16" height="90" fill="currentColor" />
-                        <rect x="20" y="230" width="360" height="14" fill="currentColor" />
-                        <rect x="140" y="130" width="120" height="110" fill="currentColor" />
-                    </svg>
-                </div>
-                <h2>Everything You Need to Succeed</h2>
-                <span class="section_underline" aria-hidden="true"></span>
-                <div class="succeed_items">
-                    <div class="succeed_item"><i class="fa-solid fa-user-tie"></i>
-                        <h4>Mentorship</h4>
-                        <p>Connect with industry experts and leaders.</p>
+                <!-- Navigation Tabs (Sticker Pills) -->
+                <div class="flex-1 py-3 px-2.5 overflow-y-auto space-y-1.5">
+                    <div class="px-2 pb-0.5">
+                        <span class="font-label-caps text-[10px] text-[#1E3A2F] uppercase tracking-wider font-bold">Enterprise
+                            Views</span>
                     </div>
-                    <div class="succeed_item"><i class="fa-solid fa-share-nodes"></i>
-                        <h4>Networking</h4>
-                        <p>Build meaningful connections worldwide.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-solid fa-book-open"></i>
-                        <h4>Resources</h4>
-                        <p>Guides, tools and insights for your journey.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-regular fa-calendar"></i>
-                        <h4>Events</h4>
-                        <p>Workshops, webinars and global events.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-solid fa-bullhorn"></i>
-                        <h4>Showcase</h4>
-                        <p>Showcase your innovations to the world.</p>
-                    </div>
-                </div>
-            </section>
 
-            <section class="cta_banner">
-                <p>&ldquo;Promoting Innovation. Building Partnerships. Strengthening the AYUSH Ecosystem.&rdquo;</p>
-                <a href="#join" class="btn btn-primary">Be a Part of the Movement <i
-                        class="fa-solid fa-arrow-right"></i></a>
-            </section>
-        </main>
+                    <!-- Tab 1: AI Pitch Evaluator (Active Sticker Card) -->
+                    <a class="bg-[#FFFFFF] text-[#181816] border-2 border-[#181816] rounded-xl font-bold px-3 py-1.5 flex items-center gap-2.5 cursor-pointer pop-shadow-sm no-underline"
+                        href="#evaluator">
+                        <span class="material-symbols-outlined text-base text-[#0E4B3E]">psychology</span>
+                        <span class="font-body-md text-xs flex-1 text-[#181816]">AI Pitch Evaluator</span>
+                        <span
+                            class="font-label-code-sm text-[10px] px-2 py-0.5 rounded-full bg-[#D7F4E5] border-2 border-[#181816] text-[#0E4B3E] font-bold">Live</span>
+                    </a>
+
+                    <!-- Tab 2: Adaptive Interviewer -->
+                    <a class="text-[#181816] font-medium px-3 py-1.5 rounded-xl border border-transparent hover:border-2 hover:border-[#181816] hover:bg-[#FFFFFF] flex items-center gap-2.5 transition-all cursor-pointer hover:pop-shadow-sm text-xs no-underline"
+                        href="/interview_dashboard.html">
+                        <span class="material-symbols-outlined text-base text-[#181816]">smart_toy</span>
+                        <span class="flex-1">Adaptive Interviewer</span>
+                        <span class="w-2 h-2 rounded-full bg-[#15803D] border border-white"></span>
+                    </a>
+
+                    <!-- Tab 3: Startup Directory -->
+                    <a class="text-[#181816] font-medium px-3 py-1.5 rounded-xl border border-transparent hover:border-2 hover:border-[#181816] hover:bg-[#FFFFFF] flex items-center gap-2.5 transition-all cursor-pointer hover:pop-shadow-sm text-xs no-underline"
+                        href="/startups/">
+                        <span class="material-symbols-outlined text-base text-[#181816]">domain</span>
+                        <span class="flex-1">Startup Directory</span>
+                        <span
+                            class="font-label-code-sm text-[10px] bg-[#FEF08A] px-1.5 py-0.2 rounded-full border border-[#181816] text-[#181816] font-bold">1,420+</span>
+                    </a>
+
+                    <!-- Tab 4: Deal Flow & Risk -->
+                    <a class="text-[#181816] font-medium px-3 py-1.5 rounded-xl border border-transparent hover:border-2 hover:border-[#181816] hover:bg-[#FFFFFF] flex items-center gap-2.5 transition-all cursor-pointer hover:pop-shadow-sm text-xs no-underline"
+                        href="/investor/">
+                        <span class="material-symbols-outlined text-base text-[#181816]">monitoring</span>
+                        <span>Deal Flow &amp; Risk</span>
+                    </a>
+
+                    <!-- Tab 5: Government Schemes -->
+                    <a class="text-[#181816] font-medium px-3 py-1.5 rounded-xl border border-transparent hover:border-2 hover:border-[#181816] hover:bg-[#FFFFFF] flex items-center gap-2.5 transition-all cursor-pointer hover:pop-shadow-sm text-xs no-underline"
+                        href="/schemes/">
+                        <span class="material-symbols-outlined text-base text-[#181816]">account_balance</span>
+                        <span>Government Schemes</span>
+                    </a>
+
+                    <!-- Tab 6: Founder Profile Manager -->
+                    <a class="text-[#181816] font-medium px-3 py-1.5 rounded-xl border border-transparent hover:border-2 hover:border-[#181816] hover:bg-[#FFFFFF] flex items-center gap-2.5 transition-all cursor-pointer hover:pop-shadow-sm text-xs no-underline"
+                        href="/profile/">
+                        <span class="material-symbols-outlined text-base text-[#181816]">badge</span>
+                        <span>Founder Profile App</span>
+                    </a>
+
+                    <!-- Active Peer Ingress Section (Curved sticker box) -->
+                    <div class="pt-2">
+                        <div class="flex items-center justify-between pb-1 px-1">
+                            <span class="font-label-caps text-[10px] text-[#1E3A2F] uppercase tracking-wider font-bold">Evaluators
+                                Online</span>
+                            <span
+                                class="font-label-code-sm text-[10px] text-[#181816] font-bold bg-[#D7F4E5] px-1.5 py-0.2 rounded-full border border-[#181816]">4
+                                active</span>
+                        </div>
+                        <div class="space-y-1.5 mt-1 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-2.5 pop-shadow-sm">
+                            <div class="flex items-center gap-2 py-0.5 font-label-code-sm text-[11px] text-[#181816]">
+                                <span class="w-2 h-2 rounded-full bg-[#15803D] border border-[#181816]"></span>
+                                <span class="truncate font-semibold">groq_llama3 <span
+                                        class="text-[#78716C] font-normal">/eval_stream</span></span>
+                            </div>
+                            <div class="flex items-center gap-2 py-0.5 font-label-code-sm text-[11px] text-[#181816]">
+                                <span class="w-2 h-2 rounded-full bg-[#E05326] border border-[#181816]"></span>
+                                <span class="truncate font-semibold">gemini_2.0 <span
+                                        class="text-[#78716C] font-normal">/deck_ocr</span></span>
+                            </div>
+                            <div class="flex items-center gap-2 py-0.5 font-label-code-sm text-[11px] text-[#181816]">
+                                <span class="w-2 h-2 rounded-full bg-[#15803D] border border-[#181816]"></span>
+                                <span class="truncate font-semibold">faiss_vector <span
+                                        class="text-[#78716C] font-normal">/ayush_kb</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Footer -->
+                <div class="border-t-2 border-[#181816] p-2.5 bg-[#718D80] space-y-1">
+                    <a class="text-[#181816] px-2 py-1 flex items-center gap-2 hover:bg-[#FFFFFF] rounded-xl transition-all font-label-code-sm text-[11px] font-semibold no-underline"
+                        href="/auth">
+                        <span class="material-symbols-outlined text-sm">tune</span>
+                        <span>Authentication Center</span>
+                    </a>
+                    <a class="text-[#181816] px-2 py-1 flex items-center gap-2 hover:bg-[#FFFFFF] rounded-xl transition-all font-label-code-sm text-[11px] font-semibold no-underline"
+                        href="https://ayush.gov.in" target="_blank">
+                        <span class="material-symbols-outlined text-sm">contact_support</span>
+                        <span>Ministry Portal External</span>
+                    </a>
+                    <div
+                        class="px-2 pt-1.5 pb-0.5 text-[10px] text-[#181816] font-label-code-sm flex items-center justify-between font-bold border-t border-[#181816]/30">
+                        <span>GROQ FAST INFERENCE</span>
+                        <span class="bg-[#D7F4E5] border border-[#181816] px-1.5 rounded-full text-[#0B382F]">22ms RAG</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ================= MAIN WORKSPACE CANVAS (Architectural Dot Grid) ================= -->
+            <main class="flex-1 overflow-y-auto bg-dot-grid p-4 lg:p-6 space-y-6">
+
+                <!-- ================= SECTION: GLOBAL ECOSYSTEM KPI OVERVIEW ================= -->
+                <section class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-5 pop-shadow-lg">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 pb-3 border-b-2 border-[#181816]">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-label-code-sm text-[10px] font-bold bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816] pop-shadow-sm">
+                                    SOVEREIGN AI VENTURE MESH
+                                </span>
+                                <span class="font-label-code-sm text-[11px] text-[#4E4B47] font-semibold">FY 2025-2026 Live
+                                    Telemetry</span>
+                            </div>
+                            <h1 class="font-headline-lg text-xl sm:text-2xl font-extrabold text-[#181816] mt-1 tracking-tight">
+                                AYUSH Bio-Tech &amp; Startup Capital Intelligence
+                            </h1>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button onclick="exportRegulatoryDossier()"
+                                class="px-3.5 py-1.5 bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold flex items-center gap-1.5 btn-pop">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Export Regulatory Dossier</span>
+                            </button>
+                            <button onclick="triggerRagSync()"
+                                class="px-3.5 py-1.5 bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold flex items-center gap-1.5 btn-pop">
+                                <span class="material-symbols-outlined text-sm">bolt</span>
+                                <span>Trigger RAG Sync</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Tactile Institutional Metric Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                        <!-- Metric 1 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div
+                                class="flex items-center justify-between font-label-caps text-[10px] font-bold text-[#4E4B47]">
+                                <span>VENTURES REGISTERED</span>
+                                <span class="material-symbols-outlined text-sm text-[#0E4B3E]">hub</span>
+                            </div>
+                            <div class="mt-2 text-2xl font-bold font-label-code-md text-[#181816] tabular-nums">1,420+</div>
+                            <div class="mt-1 flex items-center gap-1.5 font-label-code-sm text-[11px] text-[#15803D] font-bold">
+                                <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                <span>+18.4% MoM Startups Indexed</span>
+                            </div>
+                        </div>
+
+                        <!-- Metric 2 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div
+                                class="flex items-center justify-between font-label-caps text-[10px] font-bold text-[#4E4B47]">
+                                <span>CAPITAL MOBILIZED</span>
+                                <span class="material-symbols-outlined text-sm text-[#0E4B3E]">payments</span>
+                            </div>
+                            <div class="mt-2 text-2xl font-bold font-label-code-md text-[#181816] tabular-nums">₹84.5 Cr</div>
+                            <div class="mt-1 flex items-center gap-1.5 font-label-code-sm text-[11px] text-[#15803D] font-bold">
+                                <span class="material-symbols-outlined text-[14px]">verified</span>
+                                <span>Direct Capital via Schemes</span>
+                            </div>
+                        </div>
+
+                        <!-- Metric 3 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div
+                                class="flex items-center justify-between font-label-caps text-[10px] font-bold text-[#4E4B47]">
+                                <span>KNOWLEDGE BASE PRECISION</span>
+                                <span class="material-symbols-outlined text-sm text-[#0E4B3E]">psychology_alt</span>
+                            </div>
+                            <div class="mt-2 text-2xl font-bold font-label-code-md text-[#181816] tabular-nums">94.2%</div>
+                            <div class="mt-1 flex items-center gap-1.5 font-label-code-sm text-[11px] text-[#15803D] font-bold">
+                                <span class="material-symbols-outlined text-[14px]">data_exploration</span>
+                                <span>AI Match Precision (FAISS)</span>
+                            </div>
+                        </div>
+
+                        <!-- Metric 4 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div
+                                class="flex items-center justify-between font-label-caps text-[10px] font-bold text-[#4E4B47]">
+                                <span>PIPELINE ORCHESTRATION</span>
+                                <span class="material-symbols-outlined text-sm text-[#0E4B3E]">precision_manufacturing</span>
+                            </div>
+                            <div class="mt-2 text-2xl font-bold font-label-code-md text-[#181816] tabular-nums">4 Agents</div>
+                            <div class="mt-1 flex items-center gap-1.5 font-label-code-sm text-[11px] text-[#4E4B47] font-semibold">
+                                <span class="w-2 h-2 rounded-full bg-[#15803D] border border-[#181816]"></span>
+                                <span>Engine Active (SIH1345)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= SECTION: 4-STAGE MULTI-AGENT EVALUATION SUITE ================= -->
+                <section class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-5 pop-shadow-lg" id="evaluator">
+                    <div
+                        class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5 pb-3 border-b-2 border-[#181816]">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-label-code-sm text-[10px] font-bold bg-[#0E4B3E] text-white border-2 border-[#181816] pop-shadow-sm">
+                                    CORE SIH1345 ARCHITECTURE
+                                </span>
+                                <span class="font-label-code-sm text-[11px] text-[#4E4B47] font-semibold">Gemini 2.0 Multimodal
+                                    + Groq Low-Latency Pipeline</span>
+                            </div>
+                            <h2
+                                class="font-headline-lg text-lg sm:text-xl font-extrabold text-[#181816] mt-1 tracking-tight">
+                                4-Stage Multi-Agent AI Pitch Evaluation Suite
+                            </h2>
+                            <p class="font-body-sm text-xs text-[#4E4B47] mt-0.5 font-medium">
+                                Automated deep extraction, clinical verification against AYUSH Pharmacopoeia, and sovereign
+                                deal flow routing.
+                            </p>
+                        </div>
+                        <div
+                            class="flex items-center gap-2 bg-[#FFFFFF] p-1.5 rounded-2xl border-2 border-[#181816] pop-shadow-sm self-start lg:self-auto">
+                            <span class="font-label-caps text-[10px] font-bold text-[#181816] px-1.5">VECTOR STORE:</span>
+                            <span
+                                class="bg-[#D7F4E5] px-2.5 py-0.5 rounded-full font-label-code-sm text-[10.5px] border-2 border-[#181816] text-[#0B382F] font-bold">
+                                knowledge_base.faiss (12,490 Embeddings)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 4-Stage Pipeline Tracker Architecture (Tactile Cards) -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3.5 mb-5">
+                        <!-- Stage 1 -->
+                        <div
+                            class="task-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-3.5 relative overflow-hidden flex flex-col justify-between">
+                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-[#15803D]"></div>
+                            <div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="font-label-code-sm text-[10px] text-[#0E4B3E] font-bold">STAGE 01</span>
+                                    <span
+                                        class="px-2 py-0.5 bg-[#D7F4E5] border-2 border-[#181816] text-[#0B382F] rounded-full font-label-code-sm text-[9.5px] font-bold">
+                                        Complete
+                                    </span>
+                                </div>
+                                <h3 class="font-headline-md text-sm font-bold text-[#181816] mt-2">Idea Intake Agent</h3>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1 leading-snug">
+                                    Multimodal ingestion of PDF/PPT deck. FAISS vector cosine indexing &amp; Serper web
+                                    prior-art validation.
+                                </p>
+                            </div>
+                            <div
+                                class="mt-3 font-label-code-sm text-[10px] text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] p-1.5 rounded-xl font-bold">
+                                Engine: Gemini 2.0 + Tavily API
+                            </div>
+                        </div>
+
+                        <!-- Stage 2 -->
+                        <div
+                            class="task-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-3.5 relative overflow-hidden flex flex-col justify-between">
+                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-[#E05326]"></div>
+                            <div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="font-label-code-sm text-[10px] text-[#E05326] font-bold">STAGE 02</span>
+                                    <span
+                                        class="px-2 py-0.5 bg-[#FFEFEA] border-2 border-[#181816] text-[#962C0B] rounded-full font-label-code-sm text-[9.5px] font-bold">
+                                        Active
+                                    </span>
+                                </div>
+                                <h3 class="font-headline-md text-sm font-bold text-[#181816] mt-2">Adaptive Interviewer</h3>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1 leading-snug">
+                                    Autonomous 5-question dynamic probing. Tests scientific validity, botanical supply chain,
+                                    and raw claims.
+                                </p>
+                            </div>
+                            <div
+                                class="mt-3 font-label-code-sm text-[10px] text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] p-1.5 rounded-xl font-bold">
+                                Engine: Groq LLM (LLaMA-3 70B)
+                            </div>
+                        </div>
+
+                        <!-- Stage 3 -->
+                        <div
+                            class="task-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-3.5 relative overflow-hidden flex flex-col justify-between">
+                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-[#181816]"></div>
+                            <div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="font-label-code-sm text-[10px] text-[#4E4B47] font-bold">STAGE 03A &amp;
+                                        3B</span>
+                                    <span
+                                        class="px-2 py-0.5 bg-[#E0E7FF] border-2 border-[#181816] text-[#1E1B4B] rounded-full font-label-code-sm text-[9.5px] font-bold">
+                                        Dual Ingest
+                                    </span>
+                                </div>
+                                <h3 class="font-headline-md text-sm font-bold text-[#181816] mt-2">Dual Evaluator</h3>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1 leading-snug">
+                                    Deck scored /50 (norm. 19.5 pts). Founder technical pedigree scored /40 (norm. 10.5 pts).
+                                </p>
+                            </div>
+                            <div
+                                class="mt-3 font-label-code-sm text-[10px] text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] p-1.5 rounded-xl font-bold">
+                                Weighted Max: 30.0 Pts
+                            </div>
+                        </div>
+
+                        <!-- Stage 4 -->
+                        <div
+                            class="task-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-3.5 relative overflow-hidden flex flex-col justify-between">
+                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-[#FEF08A]"></div>
+                            <div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="font-label-code-sm text-[10px] text-[#713F12] font-bold">STAGE 04</span>
+                                    <span
+                                        class="px-2 py-0.5 bg-[#FEF08A] border-2 border-[#181816] text-[#713F12] rounded-full font-label-code-sm text-[9.5px] font-bold">
+                                        Automated
+                                    </span>
+                                </div>
+                                <h3 class="font-headline-md text-sm font-bold text-[#181816] mt-2">Scoring &amp; Routing
+                                    Agent</h3>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1 leading-snug">
+                                    &ge;18.0 Pts: investor_visible (Deal Room). &lt;18.0 Pts: mentor_routed incubation
+                                    pipeline.
+                                </p>
+                            </div>
+                            <div
+                                class="mt-3 font-label-code-sm text-[10px] text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] p-1.5 rounded-xl font-bold">
+                                Gate Cutoff: 18.0 / 30.0
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drag & Drop Upload Sticker Box -->
+                    <div id="pitch-upload-zone"
+                        class="mb-5 p-5 border-2 border-dashed border-[#181816] hover:border-[#0E4B3E] rounded-3xl bg-[#FAF7F0] text-center transition-all cursor-pointer pop-shadow-sm hover:pop-shadow-md relative">
+                        <input type="file" id="pitch-file-input" class="hidden" accept=".pdf,.pptx,.ppt,.doc,.docx"
+                            onchange="handleFileUpload(event)">
+                        <div class="max-w-md mx-auto space-y-2" onclick="document.getElementById('pitch-file-input').click()">
+                            <div
+                                class="w-12 h-12 mx-auto rounded-2xl bg-[#FFFFFF] border-2 border-[#181816] text-[#0E4B3E] flex items-center justify-center pop-shadow-sm">
+                                <span class="material-symbols-outlined text-2xl">cloud_upload</span>
+                            </div>
+                            <h4 class="font-headline-md text-sm font-bold text-[#181816]">Upload Startup Pitch Deck or AYUSH
+                                Formulation Dossier</h4>
+                            <p class="font-body-sm text-xs text-[#4E4B47]">
+                                Drag and drop PDF, PPTX or Clinical Whitepaper (up to 45 MB). Instant OCR parsing with Gemini
+                                2.0 Multimodal.
+                            </p>
+                            <div
+                                class="pt-1 flex items-center justify-center gap-2 font-label-code-sm text-[11px] text-[#0B382F] font-bold">
+                                <span class="material-symbols-outlined text-sm text-[#15803D]">lock</span>
+                                <span>Encrypted with Ministry Sovereign HSM • FAISS Vector Indexing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Demo Evaluated Card: VedaBio Phytotherapeutics -->
+                    <div class="border-2 border-[#181816] rounded-3xl bg-[#FFFFFF] p-5 pop-shadow-lg">
+                        <div
+                            class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b-2 border-[#181816]">
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span
+                                        class="px-2.5 py-0.5 rounded-full font-label-code-sm text-[10px] font-bold bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] pop-shadow-sm">
+                                        LIVE EVALUATED CASE
+                                    </span>
+                                    <span
+                                        class="px-2.5 py-0.5 rounded-full font-label-code-sm text-[10.5px] font-bold bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816]">
+                                        Ayurveda
+                                    </span>
+                                    <span
+                                        class="px-2.5 py-0.5 rounded-full font-label-code-sm text-[10.5px] font-bold bg-[#E0E7FF] text-[#1E1B4B] border-2 border-[#181816]">
+                                        Bio-tech extraction
+                                    </span>
+                                    <span
+                                        class="px-2.5 py-0.5 rounded-full font-label-code-sm text-[10.5px] font-bold bg-[#FEF08A] text-[#713F12] border-2 border-[#181816] flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
+                                        AYUSH AI-VERIFIED
+                                    </span>
+                                </div>
+                                <h3 class="font-headline-lg text-lg font-bold text-[#181816] mt-2">VedaBio Phytotherapeutics
+                                    Private Limited</h3>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-0.5">
+                                    Standardized nano-liposomal Curcuminoids and Ashwagandha Withanolide formulations for
+                                    metabolic syndrome clinical trials.
+                                </p>
+                            </div>
+                            <!-- Score Stamp & Routing Pill -->
+                            <div
+                                class="flex items-center gap-3 bg-[#FAF7F0] p-3 rounded-2xl border-2 border-[#181816] pop-shadow-sm self-start lg:self-auto">
+                                <div>
+                                    <div class="font-label-caps text-[9.5px] font-bold text-[#4E4B47]">SYNTHESIZED RAG SCORE
+                                    </div>
+                                    <div class="text-2xl font-bold font-label-code-md text-[#0E4B3E] tabular-nums mt-0.5">
+                                        24.2 <span class="text-xs text-[#4E4B47] font-semibold">/ 30.0</span>
+                                    </div>
+                                </div>
+                                <div class="border-l-2 border-[#181816] pl-3">
+                                    <div class="font-label-caps text-[9.5px] font-bold text-[#4E4B47]">DISPATCH STATUS</div>
+                                    <div
+                                        class="mt-0.5 inline-flex items-center gap-1 px-2.5 py-1 bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816] rounded-full font-label-code-sm text-[10.5px] font-bold pop-shadow-sm">
+                                        <span class="material-symbols-outlined text-xs text-[#15803D]">rocket_launch</span>
+                                        <span>investor_visible (Top 5% Decile)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Breakdown Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-3.5">
+                            <!-- Sub-Score 1 -->
+                            <div class="p-3 bg-[#FAF7F0] rounded-2xl border-2 border-[#181816]">
+                                <div class="flex items-center justify-between font-label-code-sm text-xs font-bold">
+                                    <span class="text-[#181816]">Pitch Deck AI Evaluation</span>
+                                    <span class="text-[#0E4B3E]">16.8 / 19.5</span>
+                                </div>
+                                <div
+                                    class="w-full bg-[#E7DFCE] h-2 rounded-full mt-2 border border-[#181816] overflow-hidden p-px">
+                                    <div class="bg-[#0E4B3E] h-full rounded-full" style="width: 86%;"></div>
+                                </div>
+                                <p class="font-body-sm text-[11px] text-[#4E4B47] mt-2 font-medium">
+                                    High botanical standardization score. GMP compliant extraction pilot verified.
+                                </p>
+                            </div>
+                            <!-- Sub-Score 2 -->
+                            <div class="p-3 bg-[#FAF7F0] rounded-2xl border-2 border-[#181816]">
+                                <div class="flex items-center justify-between font-label-code-sm text-xs font-bold">
+                                    <span class="text-[#181816]">Founder Pedigree Evaluator</span>
+                                    <span class="text-[#0E4B3E]">7.4 / 10.5</span>
+                                </div>
+                                <div
+                                    class="w-full bg-[#E7DFCE] h-2 rounded-full mt-2 border border-[#181816] overflow-hidden p-px">
+                                    <div class="bg-[#0E4B3E] h-full rounded-full" style="width: 70%;"></div>
+                                </div>
+                                <p class="font-body-sm text-[11px] text-[#4E4B47] mt-2 font-medium">
+                                    2 Co-founders with BAMS + PhD in Phytochemistry. Patent filed with Indian Patent Office.
+                                </p>
+                            </div>
+                            <!-- Sub-Score 3 -->
+                            <div class="p-3 bg-[#FAF7F0] rounded-2xl border-2 border-[#181816]">
+                                <div class="flex items-center justify-between font-label-code-sm text-xs font-bold">
+                                    <span class="text-[#181816]">Pharmacopoeia &amp; Trial</span>
+                                    <span class="text-[#15803D]">Verified</span>
+                                </div>
+                                <div
+                                    class="w-full bg-[#E7DFCE] h-2 rounded-full mt-2 border border-[#181816] overflow-hidden p-px">
+                                    <div class="bg-[#15803D] h-full rounded-full" style="width: 95%;"></div>
+                                </div>
+                                <p class="font-body-sm text-[11px] text-[#4E4B47] mt-2 font-medium">
+                                    Zero contra-indications matched against Ayurvedic Pharmacopoeia of India (API Vol VII).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= SECTION: LIVE ADAPTIVE INTERVIEWER EXPERIENCE ================= -->
+                <section class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-5 pop-shadow-lg" id="interview">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-label-code-sm text-[10px] font-bold bg-[#FFEFEA] text-[#962C0B] border-2 border-[#181816] pop-shadow-sm">
+                                    LOW LATENCY GROQ ORCHESTRATOR
+                                </span>
+                                <span class="font-label-code-sm text-[11px] text-[#4E4B47] font-semibold">Stage 2 Adaptive
+                                    Interview Session</span>
+                            </div>
+                            <h3 class="font-headline-lg text-lg sm:text-xl font-extrabold text-[#181816] mt-1">
+                                Live Adaptive Agent Terminal (Groq LLaMA-3)
+                            </h3>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span
+                                class="flex items-center gap-1.5 font-label-code-sm text-[11px] text-[#0B382F] font-bold bg-[#D7F4E5] border-2 border-[#181816] px-2.5 py-1 rounded-full pop-shadow-sm">
+                                <span class="w-2 h-2 rounded-full bg-[#15803D] status-pulse"></span>
+                                Orchestrator Online: 14ms Response
+                            </span>
+                            <a href="/interview_dashboard.html"
+                                class="px-3 py-1 font-label-code-sm text-[11px] bg-[#FFFFFF] border-2 border-[#181816] rounded-full text-[#181816] font-bold btn-pop no-underline flex items-center gap-1">
+                                <span>Open Full Terminal</span>
+                                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Split Terminal Container (Diff/Terminal Style from Algothon) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
+                        <!-- Split 1: transcript_idea_qa.json -->
+                        <div
+                            class="border-2 border-[#181816] rounded-2xl bg-[#FFFFFF] p-3.5 flex flex-col h-80 pop-shadow-md">
+                            <div class="flex items-center justify-between pb-2 border-b-2 border-[#181816]">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[#0E4B3E] text-base">terminal</span>
+                                    <span
+                                        class="font-label-code-sm text-xs text-[#181816] font-bold">transcript_idea_qa.json</span>
+                                </div>
+                                <span
+                                    class="font-label-caps text-[9.5px] text-[#1E1B4B] bg-[#E0E7FF] border border-[#181816] px-2 py-0.5 rounded-full font-bold">
+                                    STREAM: BIOCHEMICAL RIGOR
+                                </span>
+                            </div>
+                            <div
+                                class="flex-1 overflow-y-auto space-y-2.5 mt-3 pr-1 font-label-code-sm text-[11.5px] leading-relaxed">
+                                <div class="p-2.5 rounded-xl bg-[#FAF7F0] border-2 border-[#181816]">
+                                    <span class="text-[#0E4B3E] font-bold">[AI Groq-Agent]:</span>
+                                    <p class="mt-1 text-[#181816] font-medium">
+                                        "How does your ethanol-water extraction protocol guarantee a standardized &gt;5.0%
+                                        Withaferin-A threshold across varying seasonal crops in Madhya Pradesh?"
+                                    </p>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-[#FFFFFF] border-2 border-[#181816]">
+                                    <span class="text-[#962C0B] font-bold">[Founder Voice/Text Input]:</span>
+                                    <p class="mt-1 text-[#4E4B47] font-medium">
+                                        "We utilize closed-loop supercritical fluid CO2 extraction with HPLC batch analytics. Raw
+                                        botanicals are sourced exclusively via geo-tagged contracts with Farmer Producer
+                                        Organizations (FPOs)."
+                                    </p>
+                                </div>
+                                <div
+                                    class="p-2 rounded-xl bg-[#D7F4E5] border-2 border-[#181816] text-[#0B382F] font-bold text-[10.5px] flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm text-[#15803D]">check_circle</span>
+                                    <span>Vector Match: Validated with AYUSH Quality Standards 2024 monograph.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Split 2: transcript_profile_qa.json -->
+                        <div
+                            class="border-2 border-[#181816] rounded-2xl bg-[#FFFFFF] p-3.5 flex flex-col h-80 pop-shadow-md">
+                            <div class="flex items-center justify-between pb-2 border-b-2 border-[#181816]">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[#0E4B3E] text-base">badge</span>
+                                    <span
+                                        class="font-label-code-sm text-xs text-[#181816] font-bold">transcript_profile_qa.json</span>
+                                </div>
+                                <span
+                                    class="font-label-caps text-[9.5px] text-[#713F12] bg-[#FEF08A] border border-[#181816] px-2 py-0.5 rounded-full font-bold">
+                                    STREAM: CAPABILITY &amp; SUPPLY
+                                </span>
+                            </div>
+                            <div
+                                class="flex-1 overflow-y-auto space-y-2.5 mt-3 pr-1 font-label-code-sm text-[11.5px] leading-relaxed">
+                                <div class="p-2.5 rounded-xl bg-[#FAF7F0] border-2 border-[#181816]">
+                                    <span class="text-[#0E4B3E] font-bold">[AI Groq-Agent]:</span>
+                                    <p class="mt-1 text-[#181816] font-medium">
+                                        "What is the team's regulatory history with CDSCO and State Licensing Authorities (SLA)
+                                        regarding ASU drug manufacturing approvals?"
+                                    </p>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-[#FFFFFF] border-2 border-[#181816]">
+                                    <span class="text-[#962C0B] font-bold">[Founder Voice/Text Input]:</span>
+                                    <p class="mt-1 text-[#4E4B47] font-medium">
+                                        "Our Chief Medical Officer was formerly a scientific officer at CCRAS. SLA Form 25D
+                                        license is approved, and our Phase-I observational study is registered on CTRI."
+                                    </p>
+                                </div>
+                                <div
+                                    class="p-2 rounded-xl bg-[#D7F4E5] border-2 border-[#181816] text-[#0B382F] font-bold text-[10.5px] flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm text-[#15803D]">verified</span>
+                                    <span>Regulatory Audit: CTRI/2024/09/071239 verified in National Clinical Registry.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= SECTION: AYUSH STARTUP DIRECTORY ================= -->
+                <section class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-5 pop-shadow-lg" id="directory">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 pb-3 border-b-2 border-[#181816]">
+                        <div>
+                            <h3 class="font-headline-lg text-lg sm:text-xl font-extrabold text-[#181816]">
+                                Sovereign Startup Ecosystem Directory
+                            </h3>
+                            <p class="font-body-sm text-xs text-[#4E4B47] mt-0.5 font-medium">
+                                Categorized by statutory medical discipline and clinical readiness levels.
+                            </p>
+                        </div>
+
+                        <!-- AYUSH Discipline Filter Chips (Tactile Stickers) -->
+                        <div class="flex flex-wrap items-center gap-1.5" id="stream-filters">
+                            <button onclick="filterStartups('all', this)"
+                                class="stream-btn active px-3 py-1 rounded-full text-xs font-bold bg-[#0E4B3E] text-white border-2 border-[#181816] pop-shadow-sm btn-pop">
+                                All Streams
+                            </button>
+                            <button onclick="filterStartups('Ayurveda', this)"
+                                class="stream-btn px-3 py-1 rounded-full text-xs font-bold bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816] pop-shadow-sm btn-pop">
+                                Ayurveda
+                            </button>
+                            <button onclick="filterStartups('Yoga', this)"
+                                class="stream-btn px-3 py-1 rounded-full text-xs font-bold bg-[#FEF08A] text-[#713F12] border-2 border-[#181816] pop-shadow-sm btn-pop">
+                                Yoga &amp; Naturopathy
+                            </button>
+                            <button onclick="filterStartups('Unani', this)"
+                                class="stream-btn px-3 py-1 rounded-full text-xs font-bold bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] pop-shadow-sm btn-pop">
+                                Unani
+                            </button>
+                            <button onclick="filterStartups('Siddha', this)"
+                                class="stream-btn px-3 py-1 rounded-full text-xs font-bold bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] pop-shadow-sm btn-pop">
+                                Siddha
+                            </button>
+                            <button onclick="filterStartups('Homeopathy', this)"
+                                class="stream-btn px-3 py-1 rounded-full text-xs font-bold bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] pop-shadow-sm btn-pop">
+                                Homeopathy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3 Startup Showcase Cards (Tactile Pop Cards) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5" id="startups-grid">
+                        <!-- Startup 1: PranaVeda Diagnostics -->
+                        <div class="task-card startup-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-4 flex flex-col justify-between"
+                            data-stream="Ayurveda">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span
+                                        class="px-2 py-0.5 rounded-full font-label-code-sm text-[10.5px] font-bold bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816]">
+                                        Ayurveda • Bio-AI
+                                    </span>
+                                    <span
+                                        class="font-label-code-sm text-[10px] font-bold text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] px-2 py-0.5 rounded-full">
+                                        STAGE: SEED
+                                    </span>
+                                </div>
+                                <h4 class="font-headline-md text-sm font-bold text-[#181816]">PranaVeda Diagnostics</h4>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1.5 leading-snug">
+                                    Nadi Pariksha AI sensor wristband mapping real-time Vata-Pitta-Kapha bio-frequencies with
+                                    clinical-grade accuracy.
+                                </p>
+                                <div
+                                    class="mt-4 pt-3 border-t-2 border-[#E7DFCE] space-y-1.5 font-label-code-sm text-xs">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">AYUSH Standard Mark:</span>
+                                        <span class="font-bold text-[#15803D]">Compliant (Class B)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">Clinical Trial Size:</span>
+                                        <span class="font-bold text-[#181816]">1,200 Subjects (AIIMS)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">AI Synthesis Score:</span>
+                                        <span class="font-bold text-[#0E4B3E]">22.8 / 30.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 flex items-center gap-2">
+                                <a href="/investor/"
+                                    class="flex-1 py-1.5 bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold btn-pop text-center no-underline">
+                                    Connect Investor
+                                </a>
+                                <a href="/startups/"
+                                    class="w-8 h-8 bg-[#FFFFFF] hover:bg-[#FAF7F0] border-2 border-[#181816] rounded-full text-[#181816] flex items-center justify-center btn-pop no-underline"
+                                    title="Explore in Directory">
+                                    <span class="material-symbols-outlined text-sm">assessment</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Startup 2: Hakim Bio-Extracts -->
+                        <div class="task-card startup-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-4 flex flex-col justify-between"
+                            data-stream="Unani">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span
+                                        class="px-2 py-0.5 rounded-full font-label-code-sm text-[10.5px] font-bold bg-[#E0E7FF] text-[#1E1B4B] border-2 border-[#181816]">
+                                        Unani • Therapeutics
+                                    </span>
+                                    <span
+                                        class="font-label-code-sm text-[10px] font-bold text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] px-2 py-0.5 rounded-full">
+                                        STAGE: PRE-SERIES A
+                                    </span>
+                                </div>
+                                <h4 class="font-headline-md text-sm font-bold text-[#181816]">Hakim Bio-Extracts</h4>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1.5 leading-snug">
+                                    Khamira and Majun precision micro-encapsulation addressing neuro-protective pathways and
+                                    cognitive health.
+                                </p>
+                                <div
+                                    class="mt-4 pt-3 border-t-2 border-[#E7DFCE] space-y-1.5 font-label-code-sm text-xs">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">AYUSH Standard Mark:</span>
+                                        <span class="font-bold text-[#15803D]">Verified GMP</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">Export Clearance:</span>
+                                        <span class="font-bold text-[#181816]">GCC &amp; ASEAN Ready</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">AI Synthesis Score:</span>
+                                        <span class="font-bold text-[#0E4B3E]">21.4 / 30.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 flex items-center gap-2">
+                                <a href="/investor/"
+                                    class="flex-1 py-1.5 bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold btn-pop text-center no-underline">
+                                    Connect Investor
+                                </a>
+                                <a href="/startups/"
+                                    class="w-8 h-8 bg-[#FFFFFF] hover:bg-[#FAF7F0] border-2 border-[#181816] rounded-full text-[#181816] flex items-center justify-center btn-pop no-underline"
+                                    title="Explore in Directory">
+                                    <span class="material-symbols-outlined text-sm">assessment</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Startup 3: Agastya Varmam Systems -->
+                        <div class="task-card startup-card bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl p-4 flex flex-col justify-between"
+                            data-stream="Siddha">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span
+                                        class="px-2 py-0.5 rounded-full font-label-code-sm text-[10.5px] font-bold bg-[#FEF08A] text-[#713F12] border-2 border-[#181816]">
+                                        Siddha • MedTech
+                                    </span>
+                                    <span
+                                        class="font-label-code-sm text-[10px] font-bold text-[#181816] bg-[#FAF7F0] border-2 border-[#181816] px-2 py-0.5 rounded-full">
+                                        STAGE: GRANTS
+                                    </span>
+                                </div>
+                                <h4 class="font-headline-md text-sm font-bold text-[#181816]">Agastya Varmam Systems</h4>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1.5 leading-snug">
+                                    Robotic assisted neuromuscular stimulation based on canonical Siddha Varmam points for stroke
+                                    rehabilitation.
+                                </p>
+                                <div
+                                    class="mt-4 pt-3 border-t-2 border-[#E7DFCE] space-y-1.5 font-label-code-sm text-xs">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">AYUSH Standard Mark:</span>
+                                        <span class="font-bold text-[#962C0B]">Under Review</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">Clinical Trials:</span>
+                                        <span class="font-bold text-[#181816]">National Inst. of Siddha</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[#4E4B47]">AI Synthesis Score:</span>
+                                        <span class="font-bold text-[#0E4B3E]">19.9 / 30.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 flex items-center gap-2">
+                                <a href="/investor/"
+                                    class="flex-1 py-1.5 bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold btn-pop text-center no-underline">
+                                    Connect Investor
+                                </a>
+                                <a href="/startups/"
+                                    class="w-8 h-8 bg-[#FFFFFF] hover:bg-[#FAF7F0] border-2 border-[#181816] rounded-full text-[#181816] flex items-center justify-center btn-pop no-underline"
+                                    title="Explore in Directory">
+                                    <span class="material-symbols-outlined text-sm">assessment</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= SECTION: AYUSH SCHEMES & GRANTS ================= -->
+                <section class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-5 pop-shadow-lg" id="schemes">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 pb-3 border-b-2 border-[#181816]">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-label-code-sm text-[10px] font-bold bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816] pop-shadow-sm">
+                                    STATUTORY CAPITAL
+                                </span>
+                                <span class="font-label-code-sm text-[11px] text-[#4E4B47] font-semibold">Ministry Direct
+                                    Subsidies</span>
+                            </div>
+                            <h3 class="font-headline-lg text-lg sm:text-xl font-extrabold text-[#181816] mt-1">
+                                Official AYUSH Schemes &amp; Grants Feed
+                            </h3>
+                        </div>
+                        <a href="/schemes/"
+                            class="px-3.5 py-1.5 bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] rounded-full font-body-sm text-xs font-bold btn-pop no-underline flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">search_check</span>
+                            <span>Explore Full Schemes Portal</span>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                        <!-- Scheme 1 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="font-label-code-sm text-[10px] font-bold text-[#0E4B3E] bg-[#D7F4E5] border border-[#181816] px-2 py-0.5 rounded-full">
+                                    GRANT UP TO ₹50 LAKHS
+                                </span>
+                                <h4 class="font-headline-md text-sm font-bold text-[#181816] mt-2">Ayur-Udyamita Incubation
+                                    Scheme</h4>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1.5 leading-snug">
+                                    Seed-stage financial grant for AYUSH biotech startups focused on novel drug discovery,
+                                    validation, and standard packaging.
+                                </p>
+                            </div>
+                            <div
+                                class="mt-4 flex items-center justify-between pt-2.5 border-t-2 border-[#E7DFCE] font-label-code-sm text-xs">
+                                <span class="text-[#4E4B47]">Deadline: 15 May 2026</span>
+                                <a href="/schemes/"
+                                    class="text-[#0E4B3E] font-bold hover:underline flex items-center gap-0.5 no-underline">
+                                    <span>Apply via Portal</span>
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Scheme 2 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="font-label-code-sm text-[10px] font-bold text-[#713F12] bg-[#FEF08A] border border-[#181816] px-2 py-0.5 rounded-full">
+                                    CAPITAL POOL ₹120 CRORE
+                                </span>
+                                <h4 class="font-headline-md text-sm font-bold text-[#181816] mt-2">National AYUSH Mission (NAM)
+                                    Grant</h4>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1.5 leading-snug">
+                                    Direct sovereign capital subsidy for setting up automated AYUSH manufacturing units and
+                                    farm-to-clinic supply trace chains.
+                                </p>
+                            </div>
+                            <div
+                                class="mt-4 flex items-center justify-between pt-2.5 border-t-2 border-[#E7DFCE] font-label-code-sm text-xs">
+                                <span class="text-[#4E4B47]">Rolling Admissions</span>
+                                <a href="/schemes/"
+                                    class="text-[#0E4B3E] font-bold hover:underline flex items-center gap-0.5 no-underline">
+                                    <span>Apply via Portal</span>
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Scheme 3 -->
+                        <div
+                            class="task-card p-4 bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl flex flex-col justify-between">
+                            <div>
+                                <span
+                                    class="font-label-code-sm text-[10px] font-bold text-[#1E1B4B] bg-[#E0E7FF] border border-[#181816] px-2 py-0.5 rounded-full">
+                                    GLOBAL EXPORT REBATE
+                                </span>
+                                <h4 class="font-headline-md text-sm font-bold text-[#181816] mt-2">Champion Services Sector
+                                    Scheme (CSSS)</h4>
+                                <p class="font-body-sm text-xs text-[#4E4B47] mt-1.5 leading-snug">
+                                    Export incentivization grant covering WHO-GMP certification fees, US-FDA filings, and
+                                    international exhibition delegations.
+                                </p>
+                            </div>
+                            <div
+                                class="mt-4 flex items-center justify-between pt-2.5 border-t-2 border-[#E7DFCE] font-label-code-sm text-xs">
+                                <span class="text-[#4E4B47]">Active Portal</span>
+                                <a href="/schemes/"
+                                    class="text-[#0E4B3E] font-bold hover:underline flex items-center gap-0.5 no-underline">
+                                    <span>Apply via Portal</span>
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- ================= FOOTER ================= -->
+        <footer
+            class="bg-[#FFFFFF] text-[#181816] border-t-2 border-[#181816] w-full py-3 px-5 flex flex-col md:flex-row justify-between items-center gap-2.5 shrink-0">
+            <div class="flex items-center gap-2 font-body-sm text-xs flex-wrap justify-center md:justify-start">
+                <span class="font-headline-md font-extrabold text-[#0E4B3E]">Startup-AYUSH</span>
+                <span class="text-[#181816]/30">|</span>
+                <span class="text-[#4E4B47] font-medium">© 2026 Ministry of AYUSH, Government of India. Smart India
+                    Hackathon SIH1345 Enterprise Node.</span>
+            </div>
+            <div class="flex items-center gap-3 font-label-code-sm text-[11px] text-[#4E4B47] flex-wrap justify-center">
+                <a class="hover:text-[#181816] hover:underline" href="/auth">Sovereign Privacy Policy</a>
+                <span>•</span>
+                <a class="hover:text-[#181816] hover:underline" href="/startups/">AYUSH Standards</a>
+                <span>•</span>
+                <a class="hover:text-[#181816] hover:underline" href="/schemes/">Regulatory Vector KB</a>
+                <span>•</span>
+                <a class="hover:text-[#181816] hover:underline" href="/interview_dashboard.html">Interoperability API</a>
+            </div>
+        </footer>
     </div>
 
-    <!-- Notification Toast Container -->
+    <!-- ================= COMMAND SEARCH MODAL (Ctrl+K) ================= -->
+    <div id="search-modal"
+        class="fixed inset-0 bg-[#181816]/60 backdrop-blur-sm z-[10008] hidden items-start justify-center pt-20 px-4">
+        <div
+            class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-5 w-full max-w-xl pop-shadow-xl relative animate-in">
+            <div class="flex items-center justify-between pb-3 border-b-2 border-[#181816]">
+                <div class="flex items-center gap-2 text-[#0E4B3E]">
+                    <span class="material-symbols-outlined text-lg">search</span>
+                    <span class="font-headline-md font-bold text-sm text-[#181816]">Sovereign Universal Search</span>
+                </div>
+                <button onclick="closeSearchModal()"
+                    class="w-7 h-7 rounded-full border-2 border-[#181816] bg-[#FFFFFF] hover:bg-[#FAF7F0] flex items-center justify-center font-bold text-xs btn-pop">&times;</button>
+            </div>
+            <div class="mt-3.5">
+                <div class="relative">
+                    <input type="text" id="omni-search-input" onkeyup="handleOmniSearch(this.value)"
+                        placeholder="Search startups, clinical trial IDs, Ayurvedic drugs, schemes..."
+                        class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-2xl px-4 py-2.5 text-xs font-bold text-[#181816] focus:outline-none focus:ring-0">
+                    <span
+                        class="absolute right-3 top-2.5 font-label-code-sm text-[10px] bg-[#FEF08A] px-2 py-0.5 rounded-full border border-[#181816] text-[#713F12] font-bold">ESC
+                        to close</span>
+                </div>
+            </div>
+            <div class="mt-3 space-y-1.5 max-h-64 overflow-y-auto pr-1" id="search-results-list">
+                <a href="/startups/"
+                    class="flex items-center justify-between p-2 rounded-xl bg-[#FFFFFF] border border-[#181816] hover:bg-[#D7F4E5] transition-colors text-xs font-semibold text-[#181816] no-underline">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">hub</span>
+                        <span>Startups Directory (1,420+ Ventures)</span>
+                    </div>
+                    <span class="font-label-code-sm text-[10px] text-[#4E4B47]">/startups/</span>
+                </a>
+                <a href="/schemes/"
+                    class="flex items-center justify-between p-2 rounded-xl bg-[#FFFFFF] border border-[#181816] hover:bg-[#D7F4E5] transition-colors text-xs font-semibold text-[#181816] no-underline">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">account_balance</span>
+                        <span>Government Schemes &amp; Subsidies</span>
+                    </div>
+                    <span class="font-label-code-sm text-[10px] text-[#4E4B47]">/schemes/</span>
+                </a>
+                <a href="/interview_dashboard.html"
+                    class="flex items-center justify-between p-2 rounded-xl bg-[#FFFFFF] border border-[#181816] hover:bg-[#D7F4E5] transition-colors text-xs font-semibold text-[#181816] no-underline">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">smart_toy</span>
+                        <span>Virtual Pitch Interviewer (Groq LLaMA-3)</span>
+                    </div>
+                    <span class="font-label-code-sm text-[10px] text-[#4E4B47]">/interview_dashboard.html</span>
+                </a>
+                <a href="/investor/"
+                    class="flex items-center justify-between p-2 rounded-xl bg-[#FFFFFF] border border-[#181816] hover:bg-[#D7F4E5] transition-colors text-xs font-semibold text-[#181816] no-underline">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">monitoring</span>
+                        <span>Investor Deal Flow &amp; Risk Matrix</span>
+                    </div>
+                    <span class="font-label-code-sm text-[10px] text-[#4E4B47]">/investor/</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= NOTIFICATION TOAST CONTAINER ================= -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- Embedded Auth Modal Overlay -->
-    <div id="auth-modal-overlay" class="auth-modal-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;">
-        <div style="background:#fff;border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,0.2);padding:32px 28px;width:100%;max-width:440px;position:relative;">
-            <button type="button" onclick="closeAuthModal()" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:22px;color:#666;cursor:pointer;">&times;</button>
-            
-            <div style="text-align:center;margin-bottom:20px;">
-                <h3 style="font-size:20px;font-weight:800;color:#1f4d2c;margin-bottom:4px;">Startup AYUSH Portal</h3>
-                <p style="font-size:12.5px;color:#666;">Secure Sign In &amp; Registration</p>
+    <!-- ================= EMBEDDED SOVEREIGN AUTH MODAL OVERLAY ================= -->
+    <div id="auth-modal-overlay"
+        class="fixed inset-0 bg-[#181816]/70 backdrop-blur-sm z-[10009] hidden items-center justify-center p-4">
+        <div
+            class="bg-[#FAF7F0] border-2 border-[#181816] rounded-3xl p-6 sm:p-7 w-full max-w-md pop-shadow-xl relative font-body-md">
+            <button type="button" onclick="closeAuthModal()" aria-label="Close modal"
+                class="absolute top-4 right-4 bg-[#FFFFFF] hover:bg-[#FAF7F0] border-2 border-[#181816] w-8 h-8 rounded-full text-base text-[#181816] cursor-pointer flex items-center justify-center font-bold btn-pop">&times;</button>
+
+            <div class="text-center mb-5">
+                <div
+                    class="inline-flex items-center gap-1.5 bg-[#D7F4E5] border-2 border-[#181816] px-3 py-0.5 rounded-full text-[11px] font-bold text-[#0B382F] mb-2 font-label-code-sm pop-shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-[#15803D] status-pulse"></span>
+                    <span>Ministry of AYUSH • SIH1345</span>
+                </div>
+                <h3 class="text-xl font-headline-lg font-black text-[#181816] mb-1 tracking-tight">Startup-AYUSH Sovereign
+                    Access</h3>
+                <p class="text-xs text-[#4E4B47] font-medium">Sovereign Venture &amp; AI Pitch Gateway</p>
             </div>
 
             <!-- Tab Switching Buttons -->
-            <div id="auth-tabs" style="display:flex;background:#f0ede6;border-radius:10px;padding:4px;margin-bottom:20px;gap:4px;">
-                <button type="button" class="tab-btn active" id="tab-login" onclick="switchTab('login')" style="flex:1;padding:8px;border:0;background:#287345;color:#fff;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;">
-                    <i class="fa-solid fa-right-to-bracket"></i> Sign In
+            <div id="auth-tabs"
+                class="flex bg-[#E7DFCE] border-2 border-[#181816] rounded-2xl p-1 mb-5 gap-1 font-label-code-sm text-xs font-bold">
+                <button type="button" class="tab-btn active flex-1 py-1.5 rounded-xl border-2 border-[#181816] bg-[#FFFFFF] text-[#0E4B3E] pop-shadow-sm cursor-pointer"
+                    id="tab-login" onclick="switchTab('login')">
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Sign In
                 </button>
-                <button type="button" class="tab-btn" id="tab-register" onclick="switchTab('register')" style="flex:1;padding:8px;border:0;background:transparent;color:#555;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;">
-                    <i class="fa-solid fa-user-plus"></i> Register
+                <button type="button" class="tab-btn flex-1 py-1.5 rounded-xl border-2 border-transparent bg-transparent text-[#4E4B47] cursor-pointer"
+                    id="tab-register" onclick="switchTab('register')">
+                    <i class="fa-solid fa-user-plus mr-1"></i> Register
                 </button>
             </div>
 
             <!-- LOGIN FORM -->
-            <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)" style="display:flex;flex-direction:column;gap:14px;">
-                <div style="display:flex;flex-direction:column;gap:4px;">
-                    <label for="login-email" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-envelope" style="color:#287345;"></i> Email Address</label>
-                    <input type="email" id="login-email" placeholder="name@example.com" required style="padding:10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+            <form id="login-form" class="auth-form flex flex-col gap-3.5" onsubmit="handleLogin(event)">
+                <div class="flex flex-col gap-1">
+                    <label for="login-email" class="text-xs font-bold text-[#181816] flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">mail</span> Official Email
+                    </label>
+                    <input type="email" id="login-email" placeholder="name@ayurvedalabs.in" required
+                        class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-xl px-3 py-2 text-xs font-semibold text-[#181816] focus:outline-none focus:ring-0">
                 </div>
 
-                <div style="display:flex;flex-direction:column;gap:4px;">
-                    <label for="login-password" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-lock" style="color:#287345;"></i> Password</label>
-                    <div style="position:relative;display:flex;align-items:center;">
-                        <input type="password" id="login-password" placeholder="••••••••" required style="width:100%;padding:10px 38px 10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
-                        <button type="button" onclick="togglePasswordVisibility('login-password', this)" style="position:absolute;right:10px;background:none;border:none;color:#888;cursor:pointer;"><i class="fa-solid fa-eye"></i></button>
+                <div class="flex flex-col gap-1">
+                    <div class="flex justify-between items-center">
+                        <label for="login-password" class="text-xs font-bold text-[#181816] flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm text-[#0E4B3E]">lock</span> Password
+                        </label>
+                        <a href="javascript:void(0)" onclick="showToast('Password recovery instructions sent to registered mail.', 'info')"
+                            class="text-[11px] font-bold text-[#0E4B3E] hover:underline">Forgot?</a>
+                    </div>
+                    <div class="relative flex items-center">
+                        <input type="password" id="login-password" placeholder="••••••••••••" required
+                            class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-xl px-3 py-2 pr-9 text-xs font-semibold text-[#181816] focus:outline-none focus:ring-0">
+                        <button type="button" onclick="togglePasswordVisibility('login-password', this)"
+                            class="absolute right-2.5 text-[#4E4B47] hover:text-[#181816]">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
                     </div>
                 </div>
 
-                <button type="submit" id="login-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;">
-                    <span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>
+                <button type="submit" id="login-btn"
+                    class="mt-1 w-full bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-xl py-2.5 font-bold text-xs flex items-center justify-center gap-2 btn-pop">
+                    <span>Authenticate &amp; Enter</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </button>
+
+                <div class="text-center mt-1">
+                    <a href="/auth" class="text-[11px] font-bold text-[#0E4B3E] hover:underline">Open Fullscreen Portal View &rarr;</a>
+                </div>
             </form>
 
             <!-- REGISTER FORM -->
-            <form id="register-form" class="auth-form" onsubmit="handleRegister(event)" style="display:none;flex-direction:column;gap:14px;">
-                <div style="display:flex;flex-direction:column;gap:4px;">
-                    <label for="reg-username" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-user" style="color:#287345;"></i> Username</label>
-                    <input type="text" id="reg-username" placeholder="johndoe" required style="padding:10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+            <form id="register-form" class="auth-form hidden flex-col gap-3.5" onsubmit="handleRegister(event)">
+                <div class="flex flex-col gap-1">
+                    <label for="reg-username" class="text-xs font-bold text-[#181816] flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">person</span> Full Name / Venture
+                    </label>
+                    <input type="text" id="reg-username" placeholder="Dr. S. Vaidya" required
+                        class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-xl px-3 py-2 text-xs font-semibold text-[#181816] focus:outline-none focus:ring-0">
                 </div>
 
-                <div style="display:flex;flex-direction:column;gap:4px;">
-                    <label for="reg-email" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-envelope" style="color:#287345;"></i> Email Address</label>
-                    <input type="email" id="reg-email" placeholder="name@example.com" required style="padding:10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+                <div class="flex flex-col gap-1">
+                    <label for="reg-email" class="text-xs font-bold text-[#181816] flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">mail</span> Official Email
+                    </label>
+                    <input type="email" id="reg-email" placeholder="name@ayurvedalabs.in" required
+                        class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-xl px-3 py-2 text-xs font-semibold text-[#181816] focus:outline-none focus:ring-0">
                 </div>
 
-                <div style="display:flex;flex-direction:column;gap:4px;">
-                    <label for="reg-password" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-lock" style="color:#287345;"></i> Password</label>
-                    <div style="position:relative;display:flex;align-items:center;">
-                        <input type="password" id="reg-password" placeholder="Min 6 characters" required style="width:100%;padding:10px 38px 10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
-                        <button type="button" onclick="togglePasswordVisibility('reg-password', this)" style="position:absolute;right:10px;background:none;border:none;color:#888;cursor:pointer;"><i class="fa-solid fa-eye"></i></button>
+                <div class="flex flex-col gap-1">
+                    <label for="reg-password" class="text-xs font-bold text-[#181816] flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#0E4B3E]">lock</span> Master Password
+                    </label>
+                    <div class="relative flex items-center">
+                        <input type="password" id="reg-password" placeholder="Min 6 characters" required
+                            class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-xl px-3 py-2 pr-9 text-xs font-semibold text-[#181816] focus:outline-none focus:ring-0">
+                        <button type="button" onclick="togglePasswordVisibility('reg-password', this)"
+                            class="absolute right-2.5 text-[#4E4B47] hover:text-[#181816]">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
                     </div>
                 </div>
 
-                <button type="submit" id="register-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;">
-                    <span>Create Account &amp; Send OTP</span> <i class="fa-solid fa-user-check"></i>
+                <button type="submit" id="register-btn"
+                    class="mt-1 w-full bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-xl py-2.5 font-bold text-xs flex items-center justify-center gap-2 btn-pop">
+                    <span>Create Account &amp; Send OTP</span>
+                    <span class="material-symbols-outlined text-sm">shield_person</span>
                 </button>
             </form>
 
             <!-- OTP VERIFICATION FORM -->
-            <form id="otp-form" class="auth-form" onsubmit="handleVerifyOtp(event)" style="display:none;flex-direction:column;gap:14px;text-align:center;">
-                <div style="font-size:32px;color:#287345;"><i class="fa-solid fa-envelope-circle-check"></i></div>
-                <h4 style="margin:0;font-size:16px;color:#1f4d2c;font-weight:700;">Verify Email Address</h4>
-                <p style="font-size:12px;color:#666;margin:0;">Enter the 6-digit OTP sent to <strong id="target-otp-email">user@example.com</strong></p>
-
-                <div style="display:flex;flex-direction:column;gap:4px;text-align:left;">
-                    <label for="otp-code" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-key" style="color:#287345;"></i> 6-Digit OTP Code</label>
-                    <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required style="padding:10px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:18px;font-weight:800;letter-spacing:6px;text-align:center;outline:none;">
+            <form id="otp-form" class="auth-form hidden flex-col gap-4 text-center" onsubmit="handleVerifyOtp(event)">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-[#D7F4E5] text-[#0B382F] border-2 border-[#181816] text-xl flex items-center justify-center mx-auto pop-shadow-sm">
+                    <span class="material-symbols-outlined text-2xl text-[#15803D]">mark_email_read</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-headline-md font-extrabold text-[#181816]">Verify Sovereign Code</h4>
+                    <p class="text-xs text-[#4E4B47] mt-1">Enter the 6-digit cryptographic OTP sent to <strong
+                            id="target-otp-email" class="text-[#181816]">user@example.com</strong></p>
                 </div>
 
-                <button type="submit" id="otp-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;">
-                    <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
+                <div class="flex flex-col gap-1 text-left">
+                    <label for="otp-code" class="text-xs font-bold text-[#181816]">Verification Code</label>
+                    <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required
+                        class="w-full bg-[#FFFFFF] border-2 border-[#181816] rounded-xl py-2 text-xl font-bold tracking-[8px] text-center text-[#181816] focus:outline-none focus:ring-0 font-label-code-md">
+                </div>
+
+                <button type="submit" id="otp-btn"
+                    class="w-full bg-[#0E4B3E] hover:bg-[#0A382E] text-white border-2 border-[#181816] rounded-xl py-2.5 font-bold text-xs flex items-center justify-center gap-2 btn-pop">
+                    <span>Verify &amp; Activate</span>
+                    <span class="material-symbols-outlined text-sm">check_circle</span>
                 </button>
 
-                <button type="button" onclick="switchTab('register')" style="background:transparent;color:#555;border:1px solid #ccc;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;margin-top:2px;">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Register
+                <button type="button" onclick="switchTab('register')"
+                    class="w-full bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#181816] border-2 border-[#181816] rounded-xl py-2 font-bold text-xs flex items-center justify-center gap-1 btn-pop">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    <span>Change Email</span>
                 </button>
             </form>
         </div>
     </div>
-        </main>
-    </div>
 
-    <!-- Notification Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
-
+    <!-- Scripts -->
     <script src="script.js"></script>
     <script src="auth.js"></script>
     <script>
         (function () {
-            function init() {
+            let alreadyRevealed = false;
+
+            window.revealPortal = function (fadeDurationSec) {
+                if (alreadyRevealed) return;
+                alreadyRevealed = true;
+
+                try {
+                    sessionStorage.setItem('introCompletedForCurrentAppLoad', 'true');
+                } catch (e) {}
+
                 const introLayer = document.getElementById('intro-layer');
                 const homePage = document.getElementById('home-page');
 
-                // Check saved login profile
+                document.documentElement.classList.add('home-revealed');
+                document.body.classList.add('home-revealed');
+
+                if (homePage) {
+                    homePage.classList.add('revealed');
+                }
+
+                if (introLayer) {
+                    introLayer.classList.add('fade-out');
+                    const ms = Math.round((fadeDurationSec || 0.85) * 1000);
+                    setTimeout(() => {
+                        introLayer.style.display = 'none';
+                    }, ms + 80);
+                }
+
+                // Restore user profile if saved
                 try {
                     const savedProfile = localStorage.getItem('ayush_user_profile');
                     if (savedProfile) {
                         const parsed = JSON.parse(savedProfile);
-                        const loginLink = document.getElementById('nav-login-link');
-                        if (loginLink && parsed && parsed.isLoggedIn) {
-                            loginLink.textContent = (parsed.user && parsed.user.username) ? parsed.user.username : 'My Profile';
-                            loginLink.href = '/profile/';
+                        if (parsed && parsed.isLoggedIn) {
+                            const displayName = document.getElementById('user-display-name');
+                            const initials = document.getElementById('user-avatar-initials');
+                            if (displayName && parsed.user && parsed.user.username) {
+                                displayName.textContent = parsed.user.username;
+                            }
+                            if (initials && parsed.user && parsed.user.username) {
+                                initials.textContent = parsed.user.username.slice(0, 2).toUpperCase();
+                            }
                         }
                     }
-                } catch (e) { }
+                } catch (e) {}
+            };
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const skipIntro = urlParams.get('skipIntro') === 'true';
-                const hasSeenIntro = sessionStorage.getItem('introCompletedForCurrentAppLoad') === 'true';
+            // Listen for mandala events
+            document.addEventListener('ayush:whitefade-start', (e) => {
+                window.revealPortal((e.detail && e.detail.duration) || 0.85);
+            }, { once: true });
 
-                if ((skipIntro || hasSeenIntro) && introLayer) {
-                    if (skipIntro) {
-                        window.history.replaceState({}, document.title, window.location.pathname);
-                    }
-                    introLayer.style.display = 'none';
-                    document.documentElement.classList.add('home-revealed');
-                    document.body.classList.add('home-revealed');
-                    homePage.classList.add('revealed');
-                    return;
-                }
+            document.addEventListener('ayush:animation-done', () => {
+                window.revealPortal(0.4);
+            }, { once: true });
 
-                let alreadyRevealed = false;
-
-                function reveal(fadeDurationSec) {
-                    if (alreadyRevealed) return;
-                    alreadyRevealed = true;
-
-                    try {
-                        sessionStorage.setItem('introCompletedForCurrentAppLoad', 'true');
-                        localStorage.removeItem('introVideoSeen');
-                    } catch(e) {}
-
-                    const ms = Math.round((fadeDurationSec || 1.0) * 1000);
-
-                    document.documentElement.classList.add('home-revealed');
-                    document.body.classList.add('home-revealed');
-
-                    introLayer.style.pointerEvents = 'none';
-                    introLayer.style.transition = `opacity ${ms}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-                    introLayer.style.opacity = '0';
-
-                    homePage.classList.add('revealed');
-
-                    setTimeout(() => { introLayer.style.display = 'none'; }, ms + 100);
-                }
-
-                document.addEventListener('ayush:whitefade-start', (e) => {
-                    reveal(e.detail && e.detail.duration);
-                }, { once: true });
-
-                document.addEventListener('ayush:animation-done', () => {
-                    reveal(0.4);
-                }, { once: true });
-
-                setTimeout(() => reveal(1.0), 6800);
+            // Check skip query param
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('skipIntro') === 'true') {
+                window.revealPortal(0);
             }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
+            // Fallback reveal after 7.5s
+            setTimeout(() => {
+                window.revealPortal(0.85);
+            }, 7500);
         })();
+
+        // Live Health & Latency Telemetry Ping
+        function pingTelemetry() {
+            const start = performance.now();
+            fetch('/api/auth/profile', { credentials: 'include' })
+                .then(res => {
+                    const duration = Math.round(performance.now() - start);
+                    const latencyEl = document.getElementById('sync-latency-text');
+                    if (latencyEl) latencyEl.textContent = `SYNCED (${duration}ms)`;
+                })
+                .catch(() => {
+                    const latencyEl = document.getElementById('sync-latency-text');
+                    if (latencyEl) latencyEl.textContent = 'STANDALONE (0ms)';
+                });
+        }
+        setInterval(pingTelemetry, 15000);
+        setTimeout(pingTelemetry, 1200);
+
+        // Language toggle mock
+        let currentLang = 'EN';
+        function toggleLanguage(btn) {
+            currentLang = currentLang === 'EN' ? 'HI' : 'EN';
+            const langText = document.getElementById('lang-text');
+            if (langText) langText.textContent = currentLang === 'EN' ? 'हिन्दी / EN' : 'EN / हिन्दी';
+            showToast(`Display Language Switched to ${currentLang}`, 'info');
+        }
+
+        // Role changer
+        function handleRoleChange(role) {
+            const sub = document.getElementById('user-display-subtitle');
+            if (sub) sub.textContent = `${role} Node`;
+            showToast(`Active Persona Context: ${role}`, 'success');
+        }
+
+        // Startup discipline filter
+        function filterStartups(stream, btn) {
+            const btns = document.querySelectorAll('.stream-btn');
+            btns.forEach(b => {
+                b.classList.remove('bg-[#0E4B3E]', 'text-white');
+                b.classList.add('bg-[#FAF7F0]', 'text-[#181816]');
+            });
+            btn.classList.remove('bg-[#FAF7F0]', 'text-[#181816]');
+            btn.classList.add('bg-[#0E4B3E]', 'text-white');
+
+            const cards = document.querySelectorAll('.startup-card');
+            cards.forEach(card => {
+                const cardStream = card.getAttribute('data-stream');
+                if (stream === 'all' || cardStream === stream) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            showToast(`Filtered stream: ${stream}`, 'info');
+        }
+
+        // Pitch file upload handler
+        function handleFileUpload(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            showToast(`Uploading ${file.name} to Gemini 2.0 OCR Parser...`, 'info');
+            setTimeout(() => {
+                showToast(`FAISS Indexing complete for ${file.name}! Forwarding to AI Evaluator...`, 'success');
+                setTimeout(() => {
+                    window.location.href = '/interview_dashboard.html';
+                }, 1600);
+            }, 1800);
+        }
+
+        // Drag and drop listener on zone
+        const dropZone = document.getElementById('pitch-upload-zone');
+        if (dropZone) {
+            ['dragenter', 'dragover'].forEach(name => {
+                dropZone.addEventListener(name, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('bg-[#D7F4E5]');
+                });
+            });
+            ['dragleave', 'drop'].forEach(name => {
+                dropZone.addEventListener(name, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('bg-[#D7F4E5]');
+                });
+            });
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                if (dt && dt.files && dt.files[0]) {
+                    handleFileUpload({ target: { files: dt.files } });
+                }
+            });
+        }
+
+        // RAG trigger simulator
+        function triggerRagSync() {
+            showToast('Triggering RAG Vector Sync on knowledge_base.faiss...', 'info');
+            setTimeout(() => {
+                showToast('12,490 Ayurvedic Monographs synchronized across 4 agents.', 'success');
+            }, 1200);
+        }
+
+        // Dossier export
+        function exportRegulatoryDossier() {
+            showToast('Generating signed SIH1345 Regulatory PDF Dossier...', 'info');
+            setTimeout(() => {
+                showToast('Dossier generated. Check browser downloads.', 'success');
+            }, 1500);
+        }
+
+        // Omni Search Modal (Ctrl+K)
+        function openSearchModal() {
+            const m = document.getElementById('search-modal');
+            if (m) {
+                m.style.display = 'flex';
+                const input = document.getElementById('omni-search-input');
+                if (input) setTimeout(() => input.focus(), 50);
+            }
+        }
+        function closeSearchModal() {
+            const m = document.getElementById('search-modal');
+            if (m) m.style.display = 'none';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+            if (e.key === 'Escape') {
+                closeSearchModal();
+                closeAuthModal();
+            }
+        });
+
+        function handleOmniSearch(query) {
+            const list = document.getElementById('search-results-list');
+            if (!list) return;
+            const items = list.querySelectorAll('a');
+            items.forEach(item => {
+                if (item.textContent.toLowerCase().includes(query.toLowerCase())) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Toast Helper
+        function showToast(message, type) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+
+            let bg = '#FFFFFF';
+            let textColor = '#181816';
+            let icon = 'info';
+
+            if (type === 'success') {
+                bg = '#D7F4E5';
+                textColor = '#0B382F';
+                icon = 'check_circle';
+            } else if (type === 'error') {
+                bg = '#FFEFEA';
+                textColor = '#962C0B';
+                icon = 'error';
+            }
+
+            toast.style.background = bg;
+            toast.style.color = textColor;
+            toast.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">${icon}</span><span>${message}</span>`;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(15px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3600);
+        }
+
+        // Modal Helpers for Auth
+        window.openAuthModal = function (e) {
+            if (e) e.preventDefault();
+            const modal = document.getElementById('auth-modal-overlay');
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeAuthModal = function () {
+            const modal = document.getElementById('auth-modal-overlay');
+            if (modal) modal.style.display = 'none';
+        };
     </script>
 </body>
+
 </html>

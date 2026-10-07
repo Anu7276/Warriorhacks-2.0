@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Access | Ministry of Ayush Startup Portal</title>
+    <!-- Google Fonts: Plus Jakarta Sans for UI, Cinzel for sovereign seals -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+    
+    <style>
+        :root {
+            --color-bg-deep: #061811;
+            --color-bg-surface: #0a241a;
+            --color-emerald-900: #0d3526;
+            --color-emerald-800: #134e38;
+            --color-emerald-700: #1b6a4d;
+            --color-emerald-600: #248260;
+            --color-emerald-500: #10b981;
+            --color-emerald-400: #34d399;
+            --color-emerald-glow: rgba(16, 185, 129, 0.25);
+            --color-amber-500: #f59e0b;
+            --color-amber-glow: rgba(245, 158, 11, 0.2);
+            --color-slate-50: #f8fafc;
+            --color-slate-100: #f1f5f9;
+            --color-slate-200: #e2e8f0;
+            --color-slate-400: #94a3b8;
+            --color-slate-500: #64748b;
+            --color-slate-800: #1e293b;
+            --color-slate-900: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.94);
+            --glass-card-bg: rgba(255, 255, 255, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 20px 50px -10px rgba(6, 24, 17, 0.25), 0 0 1px 1px rgba(255, 255, 255, 0.4);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --font-display: 'Cinzel', serif;
+            --font-ui: 'Plus Jakarta Sans', sans-serif;
+            --transition-smooth: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: #f6f9f7;
+            color: var(--color-slate-800);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Dynamic Background Aura */
+        .ambient-mesh {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 12% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(19, 78, 56, 0.08) 0%, transparent 50%),
+                #f6f9f7;
+        }
+
+        /* Sovereign Flag Strip */
+        .sovereign-ribbon {
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #ff9933 33.3%, #ffffff 33.3%, #ffffff 66.6%, #138808 66.6%);
+            position: relative;
+            z-index: 50;
+        }
+
+        /* Top Sovereign Header */
+        .sovereign-header {
+            position: relative;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.12);
+            padding: 10px 32px;
+        }
+
+        .header-inner {
+            max-width: 1360px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .gov-seal-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+        }
+
+        .emblem-icon {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .gov-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gov-hindi {
+            font-size: 11px;
+            font-weight: 700;
+            color: #b45309;
+            letter-spacing: 0.5px;
+        }
+
+        .gov-eng {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--color-bg-deep);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .header-brand-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--color-slate-200);
+        }
+
+        .portal-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-brand-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--color-emerald-800);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .portal-brand-title span {
+            color: var(--color-amber-500);
+        }
+
+        .portal-brand-sub {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--color-slate-500);
+            letter-spacing: 0.4px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-portal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-emerald-800);
+            text-decoration: none;
+            padding: 7px 16px;
+            border-radius: 99px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .back-portal-btn:hover {
+            background: rgba(16, 185, 129, 0.16);
+            transform: translateX(-2px);
+        }
+
+        /* Main Workspace Container */
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 36px 24px 60px;
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        /* ─── Left Brand Column ─── */
+        .brand-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding-right: 12px;
+        }
+
+        .trust-badge-pill {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 99px;
+            background: #ffffff;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-emerald-800);
+        }
+
+        .status-dot-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--color-emerald-500);
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .brand-headline {
+            font-size: clamp(30px, 3.2vw, 42px);
+            font-weight: 800;
+            color: var(--color-bg-deep);
+            line-height: 1.18;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-headline em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--color-emerald-700), var(--color-emerald-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subhead {
+            font-size: 15.5px;
+            line-height: 1.65;
+            color: var(--color-slate-500);
+            max-width: 520px;
+        }
+
+        /* Feature Pillars List */
+        .feature-pillars {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pillar-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+            transition: var(--transition-smooth);
+        }
+
+        .pillar-card:hover {
+            border-color: rgba(16, 185, 129, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.08);
+        }
+
+        .pillar-icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.04));
+            color: var(--color-emerald-700);
+            border: 1px solid rgba(16, 185, 129, 0.18);
+        }
+
+        .pillar-content h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-slate-900);
+            margin-bottom: 2px;
+        }
+
+        .pillar-content p {
+            font-size: 12.5px;
+            color: var(--color-slate-500);
+            line-height: 1.45;
+        }
+
+        /* Metric Bento Bar */
+        .metric-bento-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .metric-mini-tile {
+            background: linear-gradient(145deg, #ffffff, #f7fbf9);
+            border: 1px solid rgba(16, 185, 129, 0.16);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        .metric-val {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--color-emerald-800);
+            display: block;
+            line-height: 1.1;
+        }
+
+        .metric-desc {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-slate-500);
+            margin-top: 4px;
+        }
+
+        /* ─── Right Form Card ─── */
+        .auth-card-wrapper {
+            position: relative;
+        }
+
+        .auth-card {
+            background: var(--glass-card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--glass-shadow);
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-emerald-700), var(--color-emerald-500), var(--color-amber-500));
+        }
+
+        /* Segmented Tabs */
+        .auth-segmented-tabs {
+            display: flex;
+            background: rgba(226, 232, 240, 0.6);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+            position: relative;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--color-slate-500);
+            border-radius: 9px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: var(--color-slate-900);
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: var(--color-emerald-800);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        /* Role Selector Pills */
+        .role-pill-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .role-pill {
+            flex: 1;
+            white-space: nowrap;
+            padding: 7px 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid var(--color-slate-200);
+            color: var(--color-slate-600);
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .role-pill:hover {
+            border-color: var(--color-emerald-500);
+            color: var(--color-emerald-800);
+        }
+
+        .role-pill.active {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--color-emerald-500);
+            color: var(--color-emerald-800);
+        }
+
+        /* Form Styles */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-label {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--color-slate-700);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-label i {
+            color: var(--color-emerald-600);
+            font-size: 12px;
+        }
+
+        .forgot-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-emerald-700);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .forgot-link:hover {
+            color: var(--color-emerald-500);
+            text-decoration: underline;
+        }
+
+        .input-field-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border-radius: 10px;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--color-slate-800);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-control:focus {
+            border-color: var(--color-emerald-500);
+            box-shadow: 0 0 0 3px var(--color-emerald-glow);
+        }
+
+        .input-icon-left {
+            position: absolute;
+            left: 14px;
+            color: var(--color-slate-400);
+            font-size: 14px;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-control:focus ~ .input-icon-left {
+            color: var(--color-emerald-600);
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--color-slate-400);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 14px;
+            transition: var(--transition-smooth);
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--color-slate-700);
+        }
+
+        /* Password Strength Meter */
+        .password-strength-container {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .strength-bar {
+            height: 3px;
+            flex: 1;
+            background: var(--color-slate-200);
+            border-radius: 2px;
+            transition: var(--transition-smooth);
+        }
+
+        .strength-bar.weak { background: #ef4444; }
+        .strength-bar.medium { background: #f59e0b; }
+        .strength-bar.strong { background: #10b981; }
+
+        /* Submit Action Button */
+        .submit-auth-btn {
+            background: linear-gradient(135deg, var(--color-emerald-800), var(--color-emerald-600));
+            color: #ffffff;
+            border: none;
+            border-radius: 11px;
+            padding: 14px 20px;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 4px;
+            box-shadow: 0 8px 20px -4px rgba(19, 78, 56, 0.35);
+            transition: var(--transition-smooth);
+        }
+
+        .submit-auth-btn:hover {
+            background: linear-gradient(135deg, var(--color-emerald-700), var(--color-emerald-500));
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -4px rgba(16, 185, 129, 0.4);
+        }
+
+        .submit-auth-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-auth-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* OTP Verification Screen */
+        .otp-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .otp-hero-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--color-emerald-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            box-shadow: 0 0 24px var(--color-emerald-glow);
+        }
+
+        .otp-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--color-slate-900);
+        }
+
+        .otp-desc {
+            font-size: 13px;
+            color: var(--color-slate-500);
+            line-height: 1.5;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .otp-desc strong {
+            color: var(--color-slate-800);
+        }
+
+        /* 6-box OTP digits */
+        .otp-digit-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 6px 0;
+        }
+
+        .otp-digit-input {
+            width: 48px;
+            height: 54px;
+            border-radius: 10px;
+            border: 2px solid #cbd5e1;
+            background: #ffffff;
+            font-size: 22px;
+            font-weight: 800;
+            text-align: center;
+            color: var(--color-slate-900);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .otp-digit-input:focus {
+            border-color: var(--color-emerald-500);
+            box-shadow: 0 0 0 3px var(--color-emerald-glow);
+            transform: scale(1.04);
+        }
+
+        .otp-resend-row {
+            font-size: 12.5px;
+            color: var(--color-slate-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .resend-btn {
+            background: none;
+            border: none;
+            color: var(--color-emerald-700);
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            font-size: 12.5px;
+            transition: var(--transition-smooth);
+        }
+
+        .resend-btn:hover {
+            color: var(--color-emerald-500);
+            text-decoration: underline;
+        }
+
+        .back-to-reg-btn {
+            background: transparent;
+            border: 1px solid var(--color-slate-200);
+            color: var(--color-slate-600);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .back-to-reg-btn:hover {
+            background: var(--color-slate-100);
+            color: var(--color-slate-900);
+        }
+
+        /* Logged In Dashboard Card State */
+        .dashboard-session-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .user-avatar-badge {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-emerald-700), var(--color-emerald-500));
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .session-info-box {
+            background: #ffffff;
+            border: 1px solid var(--color-slate-200);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .session-item-label {
+            color: var(--color-slate-500);
+            font-weight: 600;
+        }
+
+        .session-item-val {
+            color: var(--color-slate-900);
+            font-weight: 700;
+        }
+
+        .btn-enter-profile {
+            background: var(--color-emerald-600);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-enter-profile:hover {
+            background: var(--color-emerald-700);
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-logout:hover {
+            background: #fef2f2;
+        }
+
+        /* Toast Notifications */
+        .toast-shelf {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            pointer-events: auto;
+            min-width: 320px;
+            max-width: 420px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            color: #ffffff;
+            box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            animation: slideInToast 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: var(--transition-smooth);
+        }
+
+        .toast-item.success {
+            border-left: 4px solid var(--color-emerald-500);
+        }
+
+        .toast-item.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast-item.info {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .toast-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .toast-item.success .toast-icon { color: var(--color-emerald-400); }
+        .toast-item.error .toast-icon { color: #f87171; }
+        .toast-item.info .toast-icon { color: #60a5fa; }
+
+        @keyframes slideInToast {
+            from {
+                opacity: 0;
+                transform: translateX(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* Footer */
+        .sovereign-footer {
+            margin-top: auto;
+            background: #ffffff;
+            border-top: 1px solid var(--color-slate-200);
+            padding: 16px 32px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--color-slate-500);
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: var(--color-slate-600);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-emerald-700);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 980px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+                gap: 36px;
+                padding-top: 24px;
+            }
+
+            .brand-showcase {
+                text-align: center;
+                align-items: center;
+                padding-right: 0;
+            }
+
+            .trust-badge-pill {
+                align-self: center;
+            }
+
+            .metric-bento-strip {
+                width: 100%;
+                max-width: 520px;
+            }
+
+            .feature-pillars {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sovereign-header {
+                padding: 10px 16px;
+            }
+
+            .auth-card {
+                padding: 28px 20px;
+            }
+
+            .header-brand-divider,
+            .gov-hindi,
+            .portal-brand-sub {
+                display: none;
+            }
+
+            .otp-digit-input {
+                width: 40px;
+                height: 48px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-mesh"></div>
+    <div class="sovereign-ribbon"></div>
+
+    <!-- Sovereign Top Navigation Bar -->
+    <header class="sovereign-header">
+        <div class="header-inner">
+            <a href="/" class="gov-seal-group">
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.png" alt="Emblem of India" class="emblem-icon">
+                <div class="gov-text">
+                    <span class="gov-hindi">भारत सरकार</span>
+                    <span class="gov-eng">Ministry of Ayush</span>
+                </div>
+                <div class="header-brand-divider"></div>
+                <div class="portal-brand-text">
+                    <div class="portal-brand-title">STARTUP<span>AYUSH</span></div>
+                    <span class="portal-brand-sub">Sovereign Venture Portal (SIH1345)</span>
+                </div>
+            </a>
+
+            <div class="header-actions">
+                <a href="/" class="back-portal-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Portal Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Authentication Stage -->
+    <main class="auth-container">
+        <!-- Left: Sovereign Brand Experience -->
+        <section class="brand-showcase">
+            <div class="trust-badge-pill">
+                <span class="status-dot-pulse"></span>
+                <span>Government of India &bull; Certified Portal</span>
+            </div>
+
+            <h1 class="brand-headline">
+                Sovereign Gateway for <em>AYUSH Ventures</em> &amp; Institutional Capital
+            </h1>
+
+            <p class="brand-subhead">
+                Access your personalized AI evaluation workspace, live pitch interview engine, and direct government seed funding pipeline.
+            </p>
+
+            <!-- Feature Value Pillars -->
+            <div class="feature-pillars">
+                <div class="pillar-card">
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <div class="pillar-content">
+                        <h4>4-Agent AI Evaluation Suite</h4>
+                        <p>Pitch deck multimodal parser, RAG competitor check &amp; adaptive live interview scoring out of 30.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-landmark"></i>
+                    </div>
+                    <div class="pillar-content">
+                        <h4>Ministry Grants &amp; Scheme Fast-Track</h4>
+                        <p>Automated scheme recommendation with direct DPIIT verification and eligibility match tracking.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="pillar-content">
+                        <h4>Sovereign Encryption &amp; Dual-DB Auth</h4>
+                        <p>Bank-grade SHA-256 session rotation, secure HTTP-only cookies, and instant in-memory fallback.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ecosystem Metric Bento -->
+            <div class="metric-bento-strip">
+                <div class="metric-mini-tile">
+                    <span class="metric-val">1,420+</span>
+                    <span class="metric-desc">Startups Screened</span>
+                </div>
+                <div class="metric-mini-tile">
+                    <span class="metric-val">&#8377;85 Cr+</span>
+                    <span class="metric-desc">Grants Catalyzed</span>
+                </div>
+                <div class="metric-mini-tile">
+                    <span class="metric-val">98.4%</span>
+                    <span class="metric-desc">Evaluation Reliability</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: Modern Glassmorphic Form Card -->
+        <section class="auth-card-wrapper">
+            <div class="auth-card" id="main-auth-card">
+                <!-- SEGMENTED TABS -->
+                <div class="auth-segmented-tabs" id="auth-tabs">
+                    <button type="button" class="tab-btn active" id="tab-login-btn" onclick="switchMode('login')">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Sign In</span>
+                    </button>
+                    <button type="button" class="tab-btn" id="tab-register-btn" onclick="switchMode('register')">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Create Account</span>
+                    </button>
+                </div>
+
+                <!-- ECOSYSTEM ROLE PILLS -->
+                <div class="role-pill-group" id="role-pill-group">
+                    <button type="button" class="role-pill active" onclick="selectRole('founder', this)">
+                        <i class="fa-solid fa-seedling"></i> Founder
+                    </button>
+                    <button type="button" class="role-pill" onclick="selectRole('investor', this)">
+                        <i class="fa-solid fa-chart-line"></i> Investor
+                    </button>
+                    <button type="button" class="role-pill" onclick="selectRole('incubator', this)">
+                        <i class="fa-solid fa-building-columns"></i> Incubator
+                    </button>
+                    <button type="button" class="role-pill" onclick="selectRole('researcher', this)">
+                        <i class="fa-solid fa-flask"></i> Researcher
+                    </button>
+                </div>
+
+                <!-- 1. SIGN IN FORM -->
+                <form id="login-form" class="auth-form" onsubmit="handleLoginSubmit(event)">
+                    <div class="input-group">
+                        <label for="login-email" class="input-label">
+                            <i class="fa-solid fa-envelope"></i> Email Address
+                        </label>
+                        <div class="input-field-wrapper">
+                            <i class="fa-solid fa-envelope input-icon-left"></i>
+                            <input 
+                                type="email" 
+                                id="login-email" 
+                                class="input-control" 
+                                placeholder="name@domain.gov.in" 
+                                required 
+                                autocomplete="email"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <label for="login-password" class="input-label">
+                                <i class="fa-solid fa-lock"></i> Password
+                            </label>
+                            <a href="javascript:void(0)" onclick="showToast('Password recovery link dispatched if registered.', 'info')" class="forgot-link">Forgot password?</a>
+                        </div>
+                        <div class="input-field-wrapper">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                class="input-control" 
+                                placeholder="••••••••••••" 
+                                required 
+                                autocomplete="current-password"
+                            >
+                            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('login-password', this)" aria-label="Toggle password view">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--color-slate-600);margin-top:-6px;">
+                        <input type="checkbox" id="remember-me" checked style="accent-color:var(--color-emerald-600);width:15px;height:15px;cursor:pointer;">
+                        <label for="remember-me" style="cursor:pointer;user-select:none;">Keep session active on this device</label>
+                    </div>
+
+                    <button type="submit" id="login-submit-btn" class="submit-auth-btn">
+                        <span>Authenticate &amp; Enter</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- 2. REGISTER FORM -->
+                <form id="register-form" class="auth-form" style="display:none;" onsubmit="handleRegisterSubmit(event)">
+                    <div class="input-group">
+                        <label for="reg-username" class="input-label">
+                            <i class="fa-solid fa-user"></i> Full Name or Organization
+                        </label>
+                        <div class="input-field-wrapper">
+                            <i class="fa-solid fa-user input-icon-left"></i>
+                            <input 
+                                type="text" 
+                                id="reg-username" 
+                                class="input-control" 
+                                placeholder="Aarav Sharma" 
+                                required 
+                                autocomplete="name"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reg-email" class="input-label">
+                            <i class="fa-solid fa-envelope"></i> Official Email
+                        </label>
+                        <div class="input-field-wrapper">
+                            <i class="fa-solid fa-envelope input-icon-left"></i>
+                            <input 
+                                type="email" 
+                                id="reg-email" 
+                                class="input-control" 
+                                placeholder="aarav@ayurvediclabs.in" 
+                                required 
+                                autocomplete="email"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reg-password" class="input-label">
+                            <i class="fa-solid fa-lock"></i> Create Master Password
+                        </label>
+                        <div class="input-field-wrapper">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input 
+                                type="password" 
+                                id="reg-password" 
+                                class="input-control" 
+                                placeholder="Minimum 6 characters" 
+                                required 
+                                autocomplete="new-password"
+                                oninput="checkPasswordStrength(this.value)"
+                            >
+                            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('reg-password', this)" aria-label="Toggle password view">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength-container">
+                            <div class="strength-bar" id="str-1"></div>
+                            <div class="strength-bar" id="str-2"></div>
+                            <div class="strength-bar" id="str-3"></div>
+                            <div class="strength-bar" id="str-4"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="reg-submit-btn" class="submit-auth-btn">
+                        <span>Create Account &amp; Send OTP</span>
+                        <i class="fa-solid fa-shield-check"></i>
+                    </button>
+                </form>
+
+                <!-- 3. OTP VERIFICATION FORM -->
+                <div id="otp-form-view" class="otp-screen" style="display:none;">
+                    <div class="otp-hero-icon">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+
+                    <div>
+                        <h3 class="otp-title">Verify Official Email</h3>
+                        <p class="otp-desc">
+                            We've sent a 6-digit cryptographic verification code to <strong id="otp-display-email">founder@ayush.gov.in</strong>
+                        </p>
+                    </div>
+
+                    <!-- 6 Individual Digit Slots -->
+                    <div class="otp-digit-boxes" id="otp-boxes-wrapper">
+                        <input type="text" maxlength="1" class="otp-digit-input" data-index="0" autofocus>
+                        <input type="text" maxlength="1" class="otp-digit-input" data-index="1">
+                        <input type="text" maxlength="1" class="otp-digit-input" data-index="2">
+                        <input type="text" maxlength="1" class="otp-digit-input" data-index="3">
+                        <input type="text" maxlength="1" class="otp-digit-input" data-index="4">
+                        <input type="text" maxlength="1" class="otp-digit-input" data-index="5">
+                    </div>
+
+                    <button type="button" id="verify-otp-btn" class="submit-auth-btn" onclick="handleVerifyOtpSubmit()">
+                        <span>Verify &amp; Activate Account</span>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </button>
+
+                    <div class="otp-resend-row">
+                        <span>Didn't receive code?</span>
+                        <button type="button" class="resend-btn" id="resend-otp-btn" onclick="handleResendOtp()">Resend Code</button>
+                    </div>
+
+                    <button type="button" class="back-to-reg-btn" onclick="switchMode('register')">
+                        <i class="fa-solid fa-arrow-left"></i> Edit Email Address
+                    </button>
+                </div>
+
+                <!-- 4. ACTIVE LOGGED IN SESSION DASHBOARD -->
+                <div id="active-session-view" class="dashboard-session-card" style="display:none;">
+                    <div class="user-avatar-badge" id="sess-avatar">A</div>
+
+                    <div>
+                        <h3 class="otp-title" id="sess-username">Welcome Back</h3>
+                        <p class="otp-desc" id="sess-email">Secure Sovereign Session Active</p>
+                    </div>
+
+                    <div class="session-info-box">
+                        <div class="session-item">
+                            <span class="session-item-label">Verified Status:</span>
+                            <span class="session-item-val" style="color:var(--color-emerald-600);"><i class="fa-solid fa-badge-check"></i> Verified Founder</span>
+                        </div>
+                        <div class="session-item">
+                            <span class="session-item-label">Session ID:</span>
+                            <span class="session-item-val" id="sess-token-chip">Active (JWT)</span>
+                        </div>
+                        <div class="session-item">
+                            <span class="session-item-label">Default Workspace:</span>
+                            <span class="session-item-val">AYUSH Innovation Portal</span>
+                        </div>
+                    </div>
+
+                    <a href="/profile/" class="btn-enter-profile">
+                        <span>Launch Founder Profile &amp; AI Interview</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+
+                    <button type="button" class="btn-logout" onclick="handleLogoutSession()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out from This Device
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sovereign Footer -->
+    <footer class="sovereign-footer">
+        <div class="footer-links">
+            <a href="/">Portal Home</a>
+            <a href="/startups/">Startups Directory</a>
+            <a href="/investor/">Investor Deck</a>
+            <a href="/schemes/">Schemes Feed</a>
+            <a href="/interview_dashboard.html">AI Pitch Room</a>
+        </div>
+        <p>&copy; 2026 Ministry of Ayush, Government of India. Designed for Smart India Hackathon (SIH1345).</p>
+    </footer>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-shelf" id="toast-shelf"></div>
+
+    <script>
+        const API_BASE = '/api/auth';
+        let targetEmailForOtp = '';
+        let selectedRole = 'founder';
+
+        // Check active session on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setupOtpInputs();
+            checkExistingSession();
+        });
+
+        function selectRole(role, btn) {
+            selectedRole = role;
+            document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        function switchMode(mode) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const otpView = document.getElementById('otp-form-view');
+            const sessionView = document.getElementById('active-session-view');
+            const tabsHeader = document.getElementById('auth-tabs');
+            const rolePills = document.getElementById('role-pill-group');
+
+            const tabLogin = document.getElementById('tab-login-btn');
+            const tabReg = document.getElementById('tab-register-btn');
+
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'none';
+            otpView.style.display = 'none';
+            sessionView.style.display = 'none';
+            tabsHeader.style.display = 'flex';
+            rolePills.style.display = 'flex';
+
+            tabLogin.classList.remove('active');
+            tabReg.classList.remove('active');
+
+            if (mode === 'login') {
+                loginForm.style.display = 'flex';
+                tabLogin.classList.add('active');
+            } else if (mode === 'register') {
+                registerForm.style.display = 'flex';
+                tabReg.classList.add('active');
+            } else if (mode === 'otp') {
+                tabsHeader.style.display = 'none';
+                rolePills.style.display = 'none';
+                otpView.style.display = 'flex';
+                focusFirstOtpSlot();
+            } else if (mode === 'session') {
+                tabsHeader.style.display = 'none';
+                rolePills.style.display = 'none';
+                sessionView.style.display = 'flex';
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function checkPasswordStrength(val) {
+            const bars = [
+                document.getElementById('str-1'),
+                document.getElementById('str-2'),
+                document.getElementById('str-3'),
+                document.getElementById('str-4')
+            ];
+            bars.forEach(b => {
+                b.className = 'strength-bar';
+            });
+
+            if (!val) return;
+
+            let score = 0;
+            if (val.length >= 6) score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            for (let i = 0; i < score; i++) {
+                if (score <= 1) bars[i].classList.add('weak');
+                else if (score <= 3) bars[i].classList.add('medium');
+                else bars[i].classList.add('strong');
+            }
+        }
+
+        /* ─── 6-Digit Auto-Advancing OTP Engine ─── */
+        function setupOtpInputs() {
+            const inputs = document.querySelectorAll('.otp-digit-input');
+            inputs.forEach((input, idx) => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && idx > 0) {
+                        inputs[idx - 1].focus();
+                    }
+                });
+
+                input.addEventListener('input', (e) => {
+                    const val = input.value;
+                    if (val.length === 1 && idx < inputs.length - 1) {
+                        inputs[idx + 1].focus();
+                    }
+                });
+
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pasted = (e.clipboardData || window.clipboardData).getData('text').trim();
+                    if (/^\d{6}$/.test(pasted)) {
+                        pasted.split('').forEach((char, i) => {
+                            if (inputs[i]) inputs[i].value = char;
+                        });
+                        inputs[inputs.length - 1].focus();
+                    }
+                });
+            });
+        }
+
+        function focusFirstOtpSlot() {
+            const first = document.querySelector('.otp-digit-input[data-index="0"]');
+            if (first) {
+                first.focus();
+                document.querySelectorAll('.otp-digit-input').forEach(i => i.value = '');
+            }
+        }
+
+        function getAssembledOtp() {
+            let code = '';
+            document.querySelectorAll('.otp-digit-input').forEach(input => {
+                code += input.value.trim();
+            });
+            return code;
+        }
+
+        /* ─── Toast System ─── */
+        function showToast(message, type = 'info') {
+            const shelf = document.getElementById('toast-shelf');
+            const toast = document.createElement('div');
+            toast.className = `toast-item ${type}`;
+
+            let icon = 'fa-circle-info';
+            if (type === 'success') icon = 'fa-circle-check';
+            if (type === 'error') icon = 'fa-triangle-exclamation';
+
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} toast-icon"></i>
+                <span>${message}</span>
+            `;
+
+            shelf.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(40px)';
+                setTimeout(() => toast.remove(), 250);
+            }, 4200);
+        }
+
+        /* ─── Session Verification ─── */
+        async function checkExistingSession() {
+            const token = localStorage.getItem('accessToken');
+            const saved = localStorage.getItem('ayush_user_profile');
+
+            if (token) {
+                try {
+                    const res = await fetch(`${API_BASE}/get-me`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.user) {
+                        renderActiveSession(data.user, token);
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && parsed.isLoggedIn && parsed.user) {
+                        renderActiveSession(parsed.user, token || 'Active');
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            switchMode('login');
+        }
+
+        function renderActiveSession(user, token) {
+            document.getElementById('sess-username').innerText = user.username || 'Authorized User';
+            document.getElementById('sess-email').innerText = user.email || 'Verified Session';
+            document.getElementById('sess-avatar').innerText = (user.username || 'A')[0].toUpperCase();
+            document.getElementById('sess-token-chip').innerText = token ? 'Secure JWT Access' : 'HTTP Cookie Active';
+            switchMode('session');
+        }
+
+        /* ─── Auth API Actions ─── */
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const btn = document.getElementById('login-submit-btn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<span>Verifying Credentials...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Authentication successful! Launching workspace...', 'success');
+                    if (data.accessToken) {
+                        localStorage.setItem('accessToken', data.accessToken);
+                    }
+                    localStorage.setItem('ayush_user_profile', JSON.stringify({
+                        isLoggedIn: true,
+                        user: data.user,
+                        role: selectedRole,
+                        token: data.accessToken
+                    }));
+
+                    setTimeout(() => {
+                        window.location.href = '/profile/';
+                    }, 650);
+                } else {
+                    showToast(data.message || 'Invalid email or password', 'error');
+                    if (data.message && data.message.toLowerCase().includes('not verified')) {
+                        targetEmailForOtp = email;
+                        document.getElementById('otp-display-email').innerText = email;
+                        switchMode('otp');
+                    }
+                }
+            } catch (err) {
+                showToast('Unable to connect to sovereign authentication node.', 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Authenticate &amp; Enter</span> <i class="fa-solid fa-arrow-right"></i>`;
+            }
+        }
+
+        async function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const btn = document.getElementById('reg-submit-btn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<span>Registering Venture...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Venture account generated. Verification code dispatched.', 'success');
+                    targetEmailForOtp = email;
+                    document.getElementById('otp-display-email').innerText = email;
+                    switchMode('otp');
+                } else {
+                    showToast(data.message || 'Registration could not be completed.', 'error');
+                }
+            } catch (err) {
+                showToast('Network error during registration.', 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Create Account &amp; Send OTP</span> <i class="fa-solid fa-shield-check"></i>`;
+            }
+        }
+
+        async function handleVerifyOtpSubmit() {
+            const otp = getAssembledOtp();
+            const email = targetEmailForOtp || document.getElementById('reg-email').value.trim();
+
+            if (!otp || otp.length !== 6) {
+                showToast('Please enter the complete 6-digit verification code.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('verify-otp-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<span>Validating Code...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/verify-email`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Venture verified successfully! Welcome to the portal.', 'success');
+                    if (data.accessToken) {
+                        localStorage.setItem('accessToken', data.accessToken);
+                    }
+                    localStorage.setItem('ayush_user_profile', JSON.stringify({
+                        isLoggedIn: true,
+                        user: data.user || { email, username: email.split('@')[0] },
+                        role: selectedRole,
+                        token: data.accessToken
+                    }));
+
+                    setTimeout(() => {
+                        window.location.href = '/profile/';
+                    }, 650);
+                } else {
+                    showToast(data.message || 'Invalid or expired OTP code.', 'error');
+                }
+            } catch (err) {
+                showToast('Network error during OTP validation.', 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Verify &amp; Activate Account</span> <i class="fa-solid fa-circle-check"></i>`;
+            }
+        }
+
+        async function handleResendOtp() {
+            const email = targetEmailForOtp || document.getElementById('reg-email').value.trim();
+            if (!email) {
+                showToast('Email address is missing.', 'error');
+                return;
+            }
+            showToast('New verification code dispatched to ' + email, 'info');
+        }
+
+        async function handleLogoutSession() {
+            try {
+                await fetch(`${API_BASE}/logout`, { method: 'GET' });
+            } catch (e) {}
+
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('ayush_user_profile');
+            showToast('Logged out of sovereign session.', 'info');
+            switchMode('login');
+        }
+    </script>
+</body>
+</html>
