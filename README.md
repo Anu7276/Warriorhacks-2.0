@@ -68,7 +68,7 @@ Our platform solves this with a cohesive, full-stack, AI-native infrastructure:
 - **Multimodal Pitch Ingestion:** Ingests PDF/PPT decks, extracting structured financial, clinical, and traction signals using Google Gemini 2.0 Flash.
 - **RAG & Live Web Verification:** Cross-checks claims against a local **FAISS CPU Vector Database** and live web intelligence (`Serper.dev` / `Tavily`).
 - **Low-Latency Adaptive Interview:** Groq-accelerated LLMs conduct an interactive 5-question dynamic cross-examination that actively probes deck weaknesses.
-- **Calibrated Scoring (/30) & Intelligent Routing:** Scores pitch and team viability, routing high-potential ventures ($\ge 18.0$) to **Investor Deal Flow** and developmental ventures ($< 18.0$) to **Incubator Mentorship**.
+- **Calibrated Scoring (/30) & Intelligent Routing:** Scores pitch and team viability, routing high-potential ventures (≥ 18.0) to **Investor Deal Flow** and developmental ventures (< 18.0) to **Incubator Mentorship**.
 - **Dual-Mode Offline Resilience:** Guaranteed uptime during hackathon demos and remote network dropouts via automated in-memory MongoDB failover.
 
 ---
@@ -80,8 +80,8 @@ Our platform solves this with a cohesive, full-stack, AI-native infrastructure:
 | **🤖 4-Stage AI Pipeline** | Python, FastAPI, Gemini 2.0 Flash, Groq LLM, FAISS CPU | Automated, impartial evaluation completed in < 90 seconds |
 | **🎙️ Live Adaptive Interview** | Voice/Text UI, Groq ultra-low latency, Dynamic Follow-ups | Tests founder conviction beyond static pitch deck claims |
 | **🔍 Competitor RAG & Web Search** | FAISS Vector Store (`IndexFlatL2`) + Serper / Tavily APIs | Instant verification of claimed uniqueness against market realities |
-| **📊 Calibrated /30 Normalization** | $\left(\frac{\text{Pitch}}{50}\times 19.5\right) + \left(\frac{\text{Profile}}{40}\times 10.5\right)$ | Transparent, mathematically grounded investment readiness score |
-| **🚦 Threshold-Based Routing** | Auto-routing: $\ge 18.0 \rightarrow \text{Investor}$, $< 18.0 \rightarrow \text{Mentor}$ | Eliminates manual sorting for Ministry administrators |
+| **📊 Calibrated /30 Normalization** | `((Pitch / 50) × 19.5) + ((Profile / 40) × 10.5)` | Transparent, mathematically grounded investment readiness score |
+| **🚦 Threshold-Based Routing** | Auto-routing: ≥ 18.0 → `investor_visible`, < 18.0 → `mentor_routed` | Eliminates manual sorting for Ministry administrators |
 | **🛡️ Dual-Mode Auth Gateway** | MongoDB Mongoose with seamless In-Memory ES6 Map failover | 100% demo uptime even without local MongoDB running |
 | **🔐 Two-Factor Email OTP** | Nodemailer SMTP + SHA-256 OTP hashing + JWT Refresh Cookies | Bank-grade security with stateless token revocation |
 | **🎨 5 Specialized Frontends** | React 18, Vite 5, Tailwind CSS, HTML5 Canvas 202-frame sequence | Distinct dedicated portals for Public, Founders, and Investors |
@@ -297,8 +297,8 @@ flowchart LR
   - Pitch component normalized to **19.5 points max**.
   - Profile component normalized to **10.5 points max**.
 - **Automated Routing:**
-  - $\text{Total Score} \ge 18.0 \rightarrow \mathbf{\text{investor\_visible}}$ (Published to Investor Deal Flow).
-  - $\text{Total Score} < 18.0 \rightarrow \mathbf{\text{mentor\_routed}}$ (Directed to Incubators & Mentorship Workshops).
+  - **Score ≥ 18.0** → `investor_visible` (Published to Investor Deal Flow).
+  - **Score < 18.0** → `mentor_routed` (Directed to Incubators & Mentorship Workshops).
 - **Executive Feedback Synthesis:** Generates a 3-part structured LLM assessment report highlighting Top Strengths, Vulnerabilities, and 90-Day Recommendations.
 
 ---
@@ -386,10 +386,13 @@ $$\mathbf{\text{Total Score (Out of 30.0)}} = \text{Pitch Subtotal Normalized} +
 
 ### 3. Threshold Routing Logic
 
-$$\text{Status Flag} = \begin{cases} 
-\mathbf{\text{investor\_visible}}, & \text{if } \text{Total Score} \ge 18.0 \quad (60.0\%) \\
-\mathbf{\text{mentor\_routed}}, & \text{if } \text{Total Score} < 18.0 \quad (< 60.0\%)
+$$\text{Routing Decision} = \begin{cases} 
+\mathbf{Investor\text{ }Visible}, & \text{if Total Score} \ge 18.0 \quad (\ge 60\%) \\
+\mathbf{Mentor\text{ }Routed}, & \text{if Total Score} < 18.0 \quad (< 60\%)
 \end{cases}$$
+
+- **`investor_visible`** (Score ≥ 18.0): Automatically published to the Investor Deal Flow dashboard for venture capital discovery.
+- **`mentor_routed`** (Score < 18.0): Directed to AYUSH incubators and tailored mentorship guidance programs.
 
 ---
 
@@ -534,9 +537,9 @@ Warriorhacks-2.0/
 
 | Method | Endpoint | Description | Payloads / Output |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/idea/upload` | Upload PDF/PPT pitch deck & run Stage 1 RAG extraction | Multipart Form `file` $\rightarrow$ JSON Deck Summary |
-| `POST` | `/interview/start` | Initialize Stage 2 live AI interview session | `{ pitch_id: string }` $\rightarrow$ `{ session_id: string, question: string }` |
-| `POST` | `/interview/answer` | Submit answer & receive adaptive follow-up | `{ session_id, answer }` $\rightarrow$ `{ next_question, round }` |
+| `POST` | `/idea/upload` | Upload PDF/PPT pitch deck & run Stage 1 RAG extraction | Multipart Form `file` → JSON Deck Summary |
+| `POST` | `/interview/start` | Initialize Stage 2 live AI interview session | `{ pitch_id }` → `{ session_id, question }` |
+| `POST` | `/interview/answer` | Submit answer & receive adaptive follow-up | `{ session_id, answer }` → `{ next_question, round }` |
 | `GET` | `/interview/result/{id}`| Fetch split transcripts for evaluation | Transcripts: `transcript_idea_qa` & `transcript_profile_qa` |
 | `POST` | `/interview/evaluate/{id}`| Trigger Stage 3 & 4 full 4-agent evaluation | Complete evaluation JSON with normalized `/30` score & feedback |
 | `GET` | `/health` | Check FastAPI server health and active memory sessions | Server Status & Active Sessions count |
