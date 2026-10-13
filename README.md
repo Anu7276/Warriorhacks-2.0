@@ -1,9 +1,9 @@
-# 🌿 Startup-AYUSH Portal (WarriorHacks 2.0 / SIH 2026)
-### Problem Statement: SIH1345 | Next-Gen AI Pitch Evaluation, Adaptive Interview & Investor Matching Ecosystem
+# 🌿 Startup-AYUSH Portal (WarriorHacks 2.0)
+### Next-Gen AI Pitch Evaluation, Adaptive Interview & Investor Matching Ecosystem
 
 <div align="center">
 
-[![SIH Problem Statement](https://img.shields.io/badge/SIH%202026-Problem%20Statement%20SIH1345-green?style=for-the-badge&logo=target)](https://www.sih.gov.in/)
+[![Hackathon](https://img.shields.io/badge/WarriorHacks-2.0-green?style=for-the-badge&logo=rocket)](https://github.com/Anu7276/Warriorhacks-2.0)
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
@@ -578,7 +578,7 @@ PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/ayush_auth
 
 # JWT Secret for signing 15-minute access tokens
-JWT_SECRET=super_secret_jwt_key_sih2026_warriorhacks
+JWT_SECRET=super_secret_jwt_key_warriorhacks2026
 
 # SMTP Credentials for delivering 6-digit OTP verification codes
 EMAIL_USER=your_email@gmail.com
@@ -685,7 +685,7 @@ Fallback       Search         Retry Logic    Demo Testing
 
 ## 🤝 Contributing & License
 
-Developed for **Smart India Hackathon (SIH 2026)** under Problem Statement **SIH1345** and **WarriorHacks 2.0**.
+Developed for **WarriorHacks 2.0**.
 
 Distributed under the **ISC License**. Feel free to fork, contribute, and build upon this ecosystem!
 
